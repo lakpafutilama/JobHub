@@ -1,9 +1,11 @@
 const express = require("express");
-const customerRoute = require("./routes/authRoute");
+const userRoute = require("./routes/authRoute");
 const app = express();
 const cors = require("cors");
 const dbConnection = require("./config/database");
 const { errorHandler } = require("./handler/errorHandler");
+const { resPattern } = require("./handler/responseHandler");
+const serviceRouter = require("./routes/serviceRoute");
 require("dotenv").config();
 
 const port = process.env.SERVER_PORT;
@@ -13,13 +15,15 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "WELCOME TO JOBHUB" });
+  res.status(200).json(resPattern("Welcome", res.statusCode));
 });
 
-app.use("/user", customerRoute);
+app.use("/user", userRoute);
+
+app.use("/portal", serviceRouter);
 
 app.get("*", (req, res) => {
-  res.status(404).json({ message: "Route not found" });
+  res.status(404).json(resPattern("Oops! Seems like you are lost :)"));
 });
 
 app.use(errorHandler);
