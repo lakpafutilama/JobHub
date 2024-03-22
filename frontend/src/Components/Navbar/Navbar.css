@@ -1,0 +1,39 @@
+nav {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(51, 171, 245);
+  color: aliceblue;
+  padding: 10px 50px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+}
+
+#navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo img {
+  width: 180px;
+  height: 50px;
+}
+
+#navbar li {
+  list-style: none;
+  padding: 0px 20px;
+  position: relative;
+}
+
+#navbar li a {
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 555;
+  color: white;
+  transition: 0.3s ease-in-out;
+}
+
+#navbar li a:hover {
+  color: orange;
+}
