@@ -1,13 +1,10 @@
-const mongooose = require("mongoose");
-const userSchema = require("../models/userModel");
+const mongoose = require("mongoose");
 
 require("dotenv").config();
 
 async function dbConnection() {
   try {
-    await mongooose.connect(process.env.CONNECTION_URI);
-    const User = mongooose.model("users", userSchema);
-    return { User };
+    await mongoose.connect(process.env.CONNECTION_URI);
   } catch (err) {
     next(err);
   }

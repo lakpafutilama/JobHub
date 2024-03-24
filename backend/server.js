@@ -1,24 +1,28 @@
 const express = require("express");
-const userRoute = require("./routes/authRoute");
-const app = express();
+const morgan = require("morgan");
 const cors = require("cors");
-const dbConnection = require("./config/database");
-const { errorHandler } = require("./handler/errorHandler");
+
+const userRoute = require("./routes/authRoute");
 const { resPattern } = require("./handler/responseHandler");
+const { errorHandler } = require("./handler/errorHandler");
 const serviceRouter = require("./routes/serviceRoute");
+const dbConnection = require("./config/database");
+
 require("dotenv").config();
+
+const app = express();
 
 const port = process.env.SERVER_PORT;
 
 app.use(cors());
-
+app.use(morgan("dev"));
 app.use(express.json());
 
 app.get("/", (req, res) => {
   res.status(200).json(resPattern("Welcome", res.statusCode));
 });
 
-app.use("/user", userRoute);
+app.use("/", userRoute);
 
 app.use("/portal", serviceRouter);
 
