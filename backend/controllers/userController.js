@@ -1,9 +1,22 @@
 const mongoose = require("mongoose");
 const { resPattern } = require("../handler/responseHandler");
-const { generateJWT } = require("../helpers/generateToken");
+const { generateJWT, decodeJWT } = require("../helpers/generateToken");
 const userSchema = require("../models/userModel");
 
 const User = mongoose.model("users", userSchema);
+
+async function accessUser(req, res, next) {
+  const token = req.headers.cookie;
+  if (!token)
+    return res
+      .status(422)
+      .json(resPattern("Token not provided", res.statusCode));
+
+  const user = decodeJWT(token);
+  const userDetails = await User.findOne({ username: user.username });
+
+  res.status(200).json(resPattern(userDetails, res.statusCode));
+}
 
 async function registerUser(req, res, next) {
   try {
@@ -49,4 +62,4 @@ async function deleteUser(req, res, next) {
   res.status(200).json(resPattern(`${username} deleted`, res.statusCode));
 }
 
-module.exports = { registerUser, authenticateUser, deleteUser };
+module.exports = { accessUser, registerUser, authenticateUser, deleteUser };

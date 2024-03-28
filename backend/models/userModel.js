@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
     contact: { type: String },
     gender: { type: String },
     dob: { type: Date },
+    role: { type: String },
   },
   { timestamps: true }
 );

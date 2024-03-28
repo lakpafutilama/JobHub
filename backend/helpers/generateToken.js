@@ -6,3 +6,7 @@ const secret_key = process.env.SECRET_TOKEN;
 exports.generateJWT = (payload) => {
   return jwt.sign(payload, secret_key, { expiresIn: "30d" });
 };
+
+exports.decodeJWT = (token) => {
+  return jwt.decode(token);
+};

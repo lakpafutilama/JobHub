@@ -24,6 +24,7 @@ const Signup = () => {
       .post("http://localhost:9000/signup", userDetails)
       .then((res) => {
         document.cookie = res.data.data;
+        window.location = "http://localhost:3000/dashboard";
       })
       .catch((err) => {
         alert(err.response.data.message);
