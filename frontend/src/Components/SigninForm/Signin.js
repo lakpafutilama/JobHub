@@ -3,13 +3,13 @@ import axios from "axios";
 import "./Signin.css";
 
 const Signin = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
     const userDetails = {
-      username,
+      email,
       password,
     };
     axios
@@ -27,10 +27,10 @@ const Signin = () => {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <input
-          type="username"
-          placeholder="Enter username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Enter email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
         <input
