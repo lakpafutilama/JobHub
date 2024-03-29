@@ -22,18 +22,21 @@ nav {
 
 #navbar li {
   list-style: none;
-  padding: 0px 20px;
+  padding: 0px 10px;
   position: relative;
 }
 
-#navbar li a {
-  text-decoration: none;
-  font-size: 1.3rem;
-  font-weight: 555;
+#navbar li button {
+  border-radius: 10px;
+  border: none;
+  background-color: rgb(253, 151, 7);
   color: white;
+  align-self: center;
+  padding: 10px;
+  font-size: medium;
   transition: 0.3s ease-in-out;
 }
 
-#navbar li a:hover {
-  color: orange;
+#navbar li button:hover {
+  background-color: rgb(100, 230, 100);
 }

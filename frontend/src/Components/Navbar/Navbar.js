@@ -18,22 +18,14 @@ function Navbar() {
           <div>
             <ul id="navbar">
               <li>
-                <Link to="/">Home</Link>
+                <Link to="/signin">
+                  <button>Signin</button>
+                </Link>
               </li>
               <li>
-                <a href="index.html">About</a>
-              </li>
-              <li>
-                <a href="index.html">Contact Us</a>
-              </li>
-              <li>
-                <a href="index.html">Learn</a>
-              </li>
-              <li>
-                <Link to="/signin">Signin</Link>
-              </li>
-              <li>
-                <Link to="/signup">Signup</Link>
+                <Link to="/signup">
+                  <button>Signup</button>
+                </Link>
               </li>
             </ul>
           </div>
