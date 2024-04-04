@@ -1,6 +1,8 @@
+const { resPattern } = require("../handler/responseHandler");
+
 exports.homePage = (req, res, next) => {
   try {
-    res.send("home");
+    res.json(resPattern("home", res.statusCode));
   } catch (err) {
     next(err);
   }

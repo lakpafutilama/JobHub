@@ -1,38 +1,20 @@
-const mongoose = require("mongoose");
 const { resPattern } = require("../handler/responseHandler");
-const { generateJWT, decodeJWT } = require("../helpers/generateToken");
-const userSchema = require("../models/userModel");
+const { generateJWT } = require("../helpers/generateToken");
+
 const bcrypt = require("bcrypt");
-
-const User = mongoose.model("users", userSchema);
-
-async function accessUser(req, res, next) {
-  try {
-    const token = req.headers.cookie;
-    if (!token)
-      return res
-        .status(422)
-        .json(resPattern("Token not provided", res.statusCode));
-
-    const user = decodeJWT(token);
-    const userDetails = await User.findOne({ username: user.username });
-    if (!userDetails)
-      return res
-        .status(422)
-        .json(resPattern("Token not provided", res.statusCode));
-
-    res.status(200).json(resPattern(userDetails.role, res.statusCode));
-  } catch (err) {
-    next(err);
-  }
-}
+const {
+  saveUser,
+  getUserFromEmail,
+  deleteUserByUsername,
+  countUsers,
+} = require("../services/userService");
 
 async function registerUser(req, res, next) {
   try {
     const userData = req.body;
     userData.username = await generateUsername(userData.full_name);
     userData.password = await hashPassword(userData.password);
-    await User.create(userData);
+    await saveUser(userData);
     const token = generateJWT({ username: userData.username });
     res.status(200).json(resPattern(token, res.statusCode));
   } catch (err) {
@@ -43,7 +25,7 @@ async function registerUser(req, res, next) {
 async function authenticateUser(req, res, next) {
   try {
     const payload = req.body;
-    const check = await User.findOne({ email: payload.email });
+    const check = await getUserFromEmail(payload.email);
     if (!check)
       return res.status(400).json(resPattern("User not found", res.statusCode));
 
@@ -63,15 +45,13 @@ async function generateUsername(fullname) {
   const username = `${full_name[0]}.${
     full_name[full_name.length - 1]
   }`.toLowerCase();
-  const count = await User.countDocuments({
-    username: new RegExp(username),
-  });
+  const count = await countUsers(username);
   return count == 0 ? username : `${username}${count}`;
 }
 
 async function deleteUser(req, res, next) {
   const username = req.params.username;
-  await User.deleteOne({ username });
+  await deleteUserByUsername(username);
   res.status(200).json(resPattern(`${username} deleted`, res.statusCode));
 }
 
@@ -81,4 +61,4 @@ async function hashPassword(password) {
   return hashedPassword;
 }
 
-module.exports = { accessUser, registerUser, authenticateUser, deleteUser };
+module.exports = { registerUser, authenticateUser, deleteUser };
