@@ -1,7 +1,7 @@
-const { mongoose } = require("mongoose");
-const userSchema = require("../models/userModel");
+const mongoose = require("mongoose");
+const User = require("../models/userModel");
 
-const User = mongoose.model("users", userSchema);
+// const User = mongoose.model("users", userSchema);
 
 async function getUserFromUsername(username) {
   return await User.findOne({ username });

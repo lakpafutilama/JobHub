@@ -6,7 +6,7 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
-    role: "User",
+    role: "user",
     dob: "",
     password: "",
   });
@@ -85,8 +85,8 @@ const Signup = () => {
             onChange={handleDropdownChange}
             required
           >
-            <option value="User">User</option>
-            <option value="Organization">Organization</option>
+            <option value="user">User</option>
+            <option value="organization">Organization</option>
           </select>
         </div>
         <button type="submit">Signup</button>

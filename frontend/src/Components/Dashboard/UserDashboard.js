@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-const Dashboard = () => {
+const UserDashboard = () => {
   const handleAccess = (e) => {
     e.preventDefault();
     axios
@@ -17,4 +17,4 @@ const Dashboard = () => {
   return <div>Dashboard</div>;
 };
 
-export default Dashboard;
+export default UserDashboard;

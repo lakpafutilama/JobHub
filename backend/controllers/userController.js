@@ -1,7 +1,10 @@
 const { resPattern } = require("../handler/responseHandler");
-const { generateJWT } = require("../helpers/generateToken");
+const {
+  generateJWT,
+  decodeJWT,
+  generatePass,
+} = require("../helpers/generateToken");
 
-const bcrypt = require("bcrypt");
 const {
   saveUser,
   getUserFromEmail,
@@ -13,7 +16,7 @@ async function registerUser(req, res, next) {
   try {
     const userData = req.body;
     userData.username = await generateUsername(userData.full_name);
-    userData.password = await hashPassword(userData.password);
+    userData.password = generatePass(userData.password);
     await saveUser(userData);
     const token = generateJWT({ username: userData.username });
     res.status(200).json(resPattern(token, res.statusCode));
@@ -29,8 +32,8 @@ async function authenticateUser(req, res, next) {
     if (!check)
       return res.status(400).json(resPattern("User not found", res.statusCode));
 
-    const isMatch = await bcrypt.compare(payload.password, check.password);
-    if (!isMatch)
+    const oldPass = decodeJWT(check.password);
+    if (payload.password != oldPass)
       return res.status(422).json(resPattern("Wrong password", res.statusCode));
 
     const token = generateJWT({ username: payload.username });
@@ -53,12 +56,6 @@ async function deleteUser(req, res, next) {
   const username = req.params.username;
   await deleteUserByUsername(username);
   res.status(200).json(resPattern(`${username} deleted`, res.statusCode));
-}
-
-async function hashPassword(password) {
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  return hashedPassword;
 }
 
 module.exports = { registerUser, authenticateUser, deleteUser };
