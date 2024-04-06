@@ -4,11 +4,13 @@ const {
   authenticateUser,
   deleteUser,
 } = require("../controllers/userController");
+const { signupValidator } = require("../validators/signupValidator");
+const { loginValidator } = require("../validators/loginValidator");
 const router = express.Router();
 
-router.post("/signup", registerUser);
+router.post("/signup", signupValidator, registerUser);
 
-router.post("/login", authenticateUser);
+router.post("/login", loginValidator, authenticateUser);
 
 router.delete("/:username", deleteUser);
 

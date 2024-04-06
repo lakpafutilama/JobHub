@@ -21,6 +21,7 @@ async function registerUser(req, res, next) {
     const token = generateJWT({ username: userData.username });
     res.status(200).json(resPattern(token, res.statusCode));
   } catch (err) {
+    console.log(err.message);
     next(err);
   }
 }

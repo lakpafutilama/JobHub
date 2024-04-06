@@ -7,7 +7,6 @@ const Signup = () => {
     full_name: "",
     email: "",
     role: "user",
-    dob: "",
     password: "",
   });
 
@@ -64,15 +63,6 @@ const Signup = () => {
           placeholder="Enter password"
           name="password"
           value={formData.password}
-          onChange={handleInputChange}
-          required
-        />
-        <label>Date of Birth: </label>
-        <input
-          type="date"
-          placeholder="Date of Birth"
-          name="dob"
-          value={formData.dob}
           onChange={handleInputChange}
           required
         />
