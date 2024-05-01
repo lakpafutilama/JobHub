@@ -1,4 +1,55 @@
-main img {
-  width: 1339px;
-  height: 600px;
+.home-container {
+  min-height: calc(90vh);
+  background-image: url("../../../public/assets/home.png"); /* Adjust the path as needed */
+  background-size: cover;
+  background-position: center;
+  margin-top: 90px;
+  padding-top: 60px;
+  padding-bottom: 50px;
+}
+
+.main-content {
+  padding-top: 60px;
+}
+
+.home-content {
+  display: flex;
+  justify-content: left;
+  padding-left: 60px;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.content {
+  max-width: 500px;
+  text-align: left;
+  padding: 20px 10px;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.content h1 {
+  font-size: 2.5rem;
+  color: #0056b3;
+}
+
+.content p {
+  font-size: 1.2rem;
+  color: black;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.signup-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.signup-button:hover {
+  background-color: #0056b3;
+  font-weight: 600;
 }
