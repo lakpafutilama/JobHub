@@ -1,7 +1,4 @@
-const mongoose = require("mongoose");
 const User = require("../models/userModel");
-
-// const User = mongoose.model("users", userSchema);
 
 async function getUserFromUsername(username) {
   return await User.findOne({ username });
@@ -33,10 +30,16 @@ async function countUsers(username) {
   });
 }
 
+async function getUserId(username) {
+  const data = await User.findOne({ username });
+  return data.id;
+}
+
 module.exports = {
   getUserFromUsername,
   getUserFromEmail,
   saveUser,
   deleteUserByUsername,
   countUsers,
+  getUserId,
 };

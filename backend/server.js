@@ -5,7 +5,7 @@ const cors = require("cors");
 const userRoute = require("./routes/authRoute");
 const { resPattern } = require("./handler/responseHandler");
 const { errorHandler } = require("./handler/errorHandler");
-const serviceRouter = require("./routes/serviceRoute");
+const serviceRouter = require("./routes/jobRoute");
 const dbConnection = require("./config/database");
 
 require("dotenv").config();
@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 
 app.use("/", userRoute);
 
-app.use("/portal", serviceRouter);
+app.use("/job", serviceRouter);
 
 app.get("*", (req, res) => {
   res.status(404).json(resPattern("Oops! Seems like you are lost :)"));
