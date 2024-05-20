@@ -1,4 +1,4 @@
-nav {
+/* nav {
   position: fixed;
   top: 0;
   left: 0;
@@ -21,7 +21,7 @@ nav {
   align-items: center;
   flex: 1;
   margin: 0;
-  padding: 5px 55px;
+  padding: 5px 25px;
 }
 
 #navbar li {
@@ -51,17 +51,32 @@ nav {
 #navbar li a:hover {
   font-weight: bolder;
   color: purple;
+} */
+
+
+.logo img {
+  height: 40px;
 }
 
-.menu-icon-container {
+#navbar {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.menu-icon {
+#navbar li {
+  margin-right: 20px;
+}
+
+#navbar a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#navbar button {
+  background: none;
+  border: none;
+  color: inherit;
   cursor: pointer;
-  color: white;
-  font-size: 2em;
 }

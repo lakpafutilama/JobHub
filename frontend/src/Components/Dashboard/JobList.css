@@ -1,0 +1,45 @@
+.job-listings {
+    margin-top: 20px;
+  }
+  
+  .job {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #cbd5e0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .job h4, .job h5 {
+    color: #2d3748;
+  }
+  
+  .job p {
+    color: #4a5568;
+  }
+  
+  .job ul {
+    padding-left: 20px;
+    list-style-type: disc;
+  }
+  
+  .job ul li {
+    color: #2d3748;
+  }
+  
+  .job button {
+    padding: 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4299e1;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .job button:hover {
+    background-color: #3182ce;
+  }
+  
