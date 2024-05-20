@@ -1,13 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import "./Home.css";
 import { Link } from "react-router-dom";
+import Signin from "../SigninForm/Signin";
+import Signup from "../SignupForm/Signup";
 
 const Home = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSigningUp, setIsSigningUp] = useState(false);
+
+  const toggleSignIn = () => {
+    setIsSigningUp(false);
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const toggleSignUp = () => {
+    setIsSigningUp(true);
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const closeModalOnClickOutside = (e) => {
+    if (e.target.className === "modal") {
+      setIsModalOpen(false);
+    }
+  };
+
   return (
     <div className="home-container">
-      <Navbar />
+      <Navbar toggleSignIn={toggleSignIn} />
       <main className="main-content">
         <div className="home-content" id="home">
           <div className="header__content">
@@ -15,9 +36,9 @@ const Home = () => {
             <div className="header__content--right">
               <h1 className="header__title">WELCOME</h1>
               <p className="para__text">Want to explore JOBHUB...</p>
-              <Link to="/signup">
-                <button className="signup-button">Sign Up</button>
-              </Link>
+              <button className="signup-button" onClick={toggleSignUp}>
+                Sign Up
+              </button>
             </div>
           </div>
         </div>
@@ -139,6 +160,16 @@ const Home = () => {
         </div>
       </main>
       <Footer />
+      {isModalOpen && (
+        <div className="modal" onClick={closeModalOnClickOutside}>
+          <div className="modal-content">
+            <span className="close-button" onClick={toggleSignIn}>
+              &times;
+            </span>
+            {isSigningUp ? <Signup /> : <Signin />}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

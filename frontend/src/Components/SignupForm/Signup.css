@@ -1,7 +1,3 @@
-body {
-  background-color: aliceblue;
-}
-
 #signupform {
   border-radius: 30px;
   max-width: 400px;
@@ -9,8 +5,7 @@ body {
   margin-top: 1cm;
   padding: 25px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: rgb(48, 169, 244);
+  background-color: #576cbc;
 }
 
 #signupform h2 {
@@ -35,16 +30,14 @@ body {
   padding: 12px;
   font-size: large;
   color: white;
-  background-color: rgb(100, 230, 100);
+  background-color: #0056b3;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
 #signupform button:hover {
-  background-color: orange;
-  color: black;
-  font-size: larger;
+  background-color: blue;
 }
 
 label {

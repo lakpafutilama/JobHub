@@ -1,7 +1,3 @@
-body {
-  background-color: aliceblue;
-}
-
 #signinform {
   border-radius: 30px;
   max-width: 333px;
@@ -9,8 +5,7 @@ body {
   margin-top: 2cm;
   padding: 25px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: rgb(48, 169, 244);
+  background-color: #576cbc;
 }
 
 #signinform h2 {
@@ -35,14 +30,12 @@ body {
   padding: 12px;
   font-size: large;
   color: white;
-  background-color: rgb(100, 230, 100);
+  background-color: #0056b3;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
 #signinform button:hover {
-  background-color: orange;
-  color: black;
-  font-size: larger;
+  background-color: blue;
 }

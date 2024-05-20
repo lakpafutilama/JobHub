@@ -1,7 +1,7 @@
 import React from "react";
 import "./Navbar.css";
 
-function Navbar() {
+function Navbar({ toggleSignIn }) {
   return (
     <nav>
       <div className="logo">
@@ -12,7 +12,7 @@ function Navbar() {
       <div>
         <ul id="navbar">
           <li>
-            <a href="#home">Home</a>
+            <a href="/">Home</a>
           </li>
           <li>
             <a href="#about">About Us</a>
@@ -24,9 +24,7 @@ function Navbar() {
             <a href="#contact">Contact</a>
           </li>
           <li>
-            <a href="/signin">
-              <button>Signin</button>
-            </a>
+            <button onClick={toggleSignIn}>Signin</button>
           </li>
         </ul>
       </div>
