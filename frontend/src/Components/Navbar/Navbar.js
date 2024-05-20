@@ -1,21 +1,32 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
   return (
     <nav>
       <div className="logo">
-        <Link to="/">
+        <a href="#home">
           <img src="/assets/logo.png" alt="JOBHUB" />
-        </Link>
+        </a>
       </div>
       <div>
         <ul id="navbar">
           <li>
-            <Link to="/signin">
+            <a href="#home">Home</a>
+          </li>
+          <li>
+            <a href="#about">About Us</a>
+          </li>
+          <li>
+            <a href="#service">Service</a>
+          </li>
+          <li>
+            <a href="#contact">Contact</a>
+          </li>
+          <li>
+            <a href="/signin">
               <button>Signin</button>
-            </Link>
+            </a>
           </li>
         </ul>
       </div>
