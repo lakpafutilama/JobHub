@@ -198,7 +198,8 @@ h2 {
 .footer__title {
   font-size: 1.5em;
   margin-bottom: 10px;
-  color: #0056b3;
+  color: whitesmoke;
+  text-decoration: underline;
 }
 
 .footer__links {
