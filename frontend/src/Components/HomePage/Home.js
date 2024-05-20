@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import "./Home.css";
-import { Link } from "react-router-dom";
 import Signin from "../SigninForm/Signin";
 import Signup from "../SignupForm/Signup";
 
@@ -119,10 +118,10 @@ const Home = () => {
               <h3 className="footer__title">Learn</h3>
               <ul className="footer__links">
                 <li>
-                  <a href="#about">About</a>
+                  <a href="/#about">About</a>
                 </li>
                 <li>
-                  <a href="#service">Services</a>
+                  <a href="/#service">Services</a>
                 </li>
               </ul>
             </div>
@@ -131,13 +130,13 @@ const Home = () => {
               <h3 className="footer__title">News</h3>
               <ul className="footer__links">
                 <li>
-                  <a href="#">Events</a>
+                  <a href="/#">Events</a>
                 </li>
                 <li>
-                  <a href="#contact">Contact</a>
+                  <a href="/#contact">Contact</a>
                 </li>
                 <li>
-                  <a href="#">Legals</a>
+                  <a href="/#">Legals</a>
                 </li>
               </ul>
             </div>
@@ -146,13 +145,13 @@ const Home = () => {
               <h3 className="footer__title">Social Links</h3>
               <ul className="footer__links">
                 <li>
-                  <a href="#">Facebook</a>
+                  <a href="/#">Facebook</a>
                 </li>
                 <li>
-                  <a href="#">Twitter</a>
+                  <a href="/#">Twitter</a>
                 </li>
                 <li>
-                  <a href="#">Instagram</a>
+                  <a href="/#">Instagram</a>
                 </li>
               </ul>
             </div>
