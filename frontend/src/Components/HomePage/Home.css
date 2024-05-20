@@ -167,7 +167,7 @@ h2 {
 }
 
 .footer {
-  width: 100%;
+  width: 97.7%;
   padding: 0 15px;
   margin: 0 auto;
   background-color: rgba(0, 0, 0, 0.6);
@@ -182,11 +182,23 @@ h2 {
 
 .footer__content--item {
   padding: 10px;
+  color: white;
+}
+
+.footer__content--item a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer__content--item a:hover {
+  text-decoration: underline;
+  color: blueviolet;
 }
 
 .footer__title {
   font-size: 1.5em;
   margin-bottom: 10px;
+  color: #0056b3;
 }
 
 .footer__links {

@@ -86,24 +86,22 @@ const Home = () => {
         <div className="footer" id="contact">
           <div className="footer__content grid text__light text__center">
             <div className="footer__content--item">
-              <a href="mailto:jobhub@gmail.com">lakpa.lama4433@gmail.com</a>
+              <a href="mailto:lakpa.lama4433@gmail.com">jobhub@gmail.com</a>
               <span>
+                <br />
                 <br />
                 +977 980 123 4567
               </span>
             </div>
 
             <div className="footer__content--item">
-              <h3 className="footer__title">Projects</h3>
+              <h3 className="footer__title">Learn</h3>
               <ul className="footer__links">
                 <li>
                   <a href="#about">About</a>
                 </li>
                 <li>
                   <a href="#service">Services</a>
-                </li>
-                <li>
-                  <a href="#">Career</a>
                 </li>
               </ul>
             </div>
@@ -115,7 +113,7 @@ const Home = () => {
                   <a href="#">Events</a>
                 </li>
                 <li>
-                  <a href="#">Contact</a>
+                  <a href="#contact">Contact</a>
                 </li>
                 <li>
                   <a href="#">Legals</a>
