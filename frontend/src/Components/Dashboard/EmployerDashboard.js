@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./EmployerDashboard.css";
+// import NavBar from "./NavBar";
+import Navbar from "../Navbar/Navbar";
 
 const EmployerDashboard = () => {
   const [jobs, setJobs] = useState([
@@ -60,11 +62,7 @@ const EmployerDashboard = () => {
 
   return (
     <div className="organization-dashboard">
-      <nav className="navbar">
-        <div className="menu-icon">&#9776;</div>
-        <div className="user-profile">User Profile &#9662;</div>
-        <div className="logout-icon">&#128100;</div>
-      </nav>
+      <Navbar toggleSignIn="" home={false} />
 
       <h2>Welcome to Your Dashboard</h2>
 

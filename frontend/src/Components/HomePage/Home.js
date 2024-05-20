@@ -27,7 +27,8 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <Navbar toggleSignIn={toggleSignIn} />
+      <Navbar toggleSignIn={toggleSignIn} home={true} />
+
       <main className="main-content">
         <div className="home-content" id="home">
           <div className="header__content">
