@@ -6,4 +6,4 @@ const candidateSchema = new mongoose.Schema({
   summary: { type: String },
 });
 
-module.exports = candidateSchema;
+module.exports = mongoose.model("details", candidateSchema);

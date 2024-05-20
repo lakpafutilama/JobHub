@@ -1,6 +1,11 @@
 const { resPattern } = require("../handler/responseHandler");
-const { verifyToken } = require("../middleware/verifyToken");
-const { allJobs, postJob, specificJobs } = require("../services/jobService");
+const {
+  allJobs,
+  postJob,
+  specificJobs,
+  deleteJob,
+  editJob,
+} = require("../services/jobService");
 
 exports.homePage = (req, res, next) => {
   try {
@@ -38,4 +43,24 @@ async function addJob(req, res, next) {
   }
 }
 
-module.exports = { jobList, specificJobList, addJob };
+async function closeJob(req, res, next) {
+  try {
+    const id = req.params.id;
+    await editJob(id);
+    res.json(resPattern("Closed", res.statusCode));
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function removeJob(req, res, next) {
+  try {
+    const id = req.params.id;
+    await deleteJob(id);
+    res.json(resPattern("Removed", res.statusCode));
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { jobList, specificJobList, addJob, closeJob, removeJob };

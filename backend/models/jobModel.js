@@ -8,6 +8,7 @@ const jobSchema = new mongoose.Schema(
     description: { type: String },
     location: { type: String },
     status: { type: String, enum: ["active", "expired", "closed"] },
+    valid_upto: { type: Date },
   },
   { timestamps: true }
 );

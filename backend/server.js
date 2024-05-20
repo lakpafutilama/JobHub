@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 
-const userRoute = require("./routes/authRoute");
+const userRoute = require("./routes/userRoute");
 const { resPattern } = require("./handler/responseHandler");
 const { errorHandler } = require("./handler/errorHandler");
 const serviceRouter = require("./routes/jobRoute");
@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
   res.status(200).json(resPattern("Welcome", res.statusCode));
 });
 
-app.use("/", userRoute);
+app.use("/user", userRoute);
 
 app.use("/job", serviceRouter);
 
