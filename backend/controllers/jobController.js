@@ -37,7 +37,7 @@ async function addJob(req, res, next) {
   try {
     const data = req.body;
     await postJob(data);
-    res.json(resPattern("added", res.statusCode));
+    res.json(resPattern("Added", res.statusCode));
   } catch (err) {
     next(err);
   }
@@ -46,8 +46,18 @@ async function addJob(req, res, next) {
 async function closeJob(req, res, next) {
   try {
     const id = req.params.id;
-    await editJob(id);
+    const data = { status: "closed" };
+    await editJob(id, data);
     res.json(resPattern("Closed", res.statusCode));
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function changeJobDetail(req, res, next) {
+  try {
+    await editJob(req.params.id, req.body);
+    res.json(resPattern("Updated", res.statusCode));
   } catch (err) {
     next(err);
   }
@@ -63,4 +73,11 @@ async function removeJob(req, res, next) {
   }
 }
 
-module.exports = { jobList, specificJobList, addJob, closeJob, removeJob };
+module.exports = {
+  jobList,
+  specificJobList,
+  addJob,
+  closeJob,
+  changeJobDetail,
+  removeJob,
+};

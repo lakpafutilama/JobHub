@@ -33,9 +33,9 @@ async function expireJob(date) {
   }
 }
 
-async function editJob(id) {
+async function editJob(id, data) {
   try {
-    await Job.findOneAndUpdate({ id }, { status: "closed" });
+    await Job.findOneAndUpdate({ id }, data);
   } catch (err) {
     throw err;
   }

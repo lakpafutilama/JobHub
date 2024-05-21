@@ -7,6 +7,7 @@ const { resPattern } = require("./handler/responseHandler");
 const { errorHandler } = require("./handler/errorHandler");
 const serviceRouter = require("./routes/jobRoute");
 const dbConnection = require("./config/database");
+const applicationRouter = require("./routes/applicationRoute");
 
 require("dotenv").config();
 
@@ -25,6 +26,8 @@ app.get("/", (req, res) => {
 app.use("/user", userRoute);
 
 app.use("/job", serviceRouter);
+
+app.use("/application", applicationRouter);
 
 app.get("*", (req, res) => {
   res.status(404).json(resPattern("Oops! Seems like you are lost :)"));
