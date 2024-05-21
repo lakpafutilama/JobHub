@@ -1,7 +1,8 @@
 const Job = require("../models/jobModel");
 
-async function allJobs() {
+async function allJobs(filter) {
   try {
+    if (filter) return Job.find({ where: { filter } });
     return Job.find();
   } catch (err) {
     throw err;

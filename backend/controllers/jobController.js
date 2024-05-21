@@ -24,6 +24,15 @@ async function jobList(req, res, next) {
   }
 }
 
+async function filteredJobs(req, res, next) {
+  try {
+    const jobList = await allJobs(req.query);
+    res.json(resPattern(jobList, res.statusCode));
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function specificJobList(req, res, next) {
   try {
     const jobList = await specificJobs(req.params.username);
@@ -75,6 +84,7 @@ async function removeJob(req, res, next) {
 
 module.exports = {
   jobList,
+  filteredJobs,
   specificJobList,
   addJob,
   closeJob,

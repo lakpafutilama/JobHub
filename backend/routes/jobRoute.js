@@ -6,10 +6,13 @@ const {
   removeJob,
   closeJob,
   changeJobDetail,
+  filteredJobs,
 } = require("../controllers/jobController");
 const router = express.Router();
 
 router.get("/list", jobList);
+
+router.get("/filtered", filteredJobs);
 
 router.get("/list/:username", specificJobList);
 
