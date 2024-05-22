@@ -2,7 +2,7 @@ const Job = require("../models/jobModel");
 
 async function allJobs(filter) {
   try {
-    if (filter) return Job.find({ where: { filter } });
+    if (filter) return Job.find(filter);
     return Job.find();
   } catch (err) {
     throw err;
@@ -36,7 +36,7 @@ async function expireJob(date) {
 
 async function editJob(id, data) {
   try {
-    await Job.findOneAndUpdate({ id }, data);
+    await Job.findByIdAndUpdate(id, data);
   } catch (err) {
     throw err;
   }
@@ -44,7 +44,7 @@ async function editJob(id, data) {
 
 async function deleteJob(id) {
   try {
-    await Job.deleteOne({ id });
+    await Job.findByIdAndDelete(id);
   } catch (err) {
     throw err;
   }

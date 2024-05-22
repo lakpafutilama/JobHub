@@ -5,6 +5,12 @@ const {
   verifyApplication,
   latestApplications,
 } = require("../controllers/applicationController");
+const {
+  postApplicationValidator,
+} = require("../validators/postApplicationValidator");
+const {
+  verifyApplicationValidator,
+} = require("../validators/verifyApplicationValidator");
 
 const router = express.Router();
 
@@ -12,8 +18,8 @@ router.get("/:type/:id", getApplications);
 
 router.get("/latest", latestApplications);
 
-router.post("/", applyJob);
+router.post("/", postApplicationValidator, applyJob);
 
-router.put("/:id", verifyApplication);
+router.put("/:id", verifyApplicationValidator, verifyApplication);
 
 module.exports = router;

@@ -11,7 +11,7 @@ exports.homePage = (req, res, next) => {
   try {
     res.json(resPattern("home", res.statusCode));
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 };
 
@@ -20,7 +20,7 @@ async function jobList(req, res, next) {
     const jobList = await allJobs();
     res.json(resPattern(jobList, res.statusCode));
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 }
 
@@ -29,7 +29,7 @@ async function filteredJobs(req, res, next) {
     const jobList = await allJobs(req.query);
     res.json(resPattern(jobList, res.statusCode));
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 }
 
@@ -38,17 +38,18 @@ async function specificJobList(req, res, next) {
     const jobList = await specificJobs(req.params.username);
     res.json(resPattern(jobList, res.statusCode));
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 }
 
 async function addJob(req, res, next) {
   try {
     const data = req.body;
+    data.description = data.description || "";
     await postJob(data);
     res.json(resPattern("Added", res.statusCode));
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 }
 
@@ -59,7 +60,7 @@ async function closeJob(req, res, next) {
     await editJob(id, data);
     res.json(resPattern("Closed", res.statusCode));
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 }
 
@@ -68,7 +69,7 @@ async function changeJobDetail(req, res, next) {
     await editJob(req.params.id, req.body);
     res.json(resPattern("Updated", res.statusCode));
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 }
 
@@ -78,7 +79,7 @@ async function removeJob(req, res, next) {
     await deleteJob(id);
     res.json(resPattern("Removed", res.statusCode));
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 }
 

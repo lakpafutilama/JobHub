@@ -6,7 +6,7 @@ async function addResume(req, res, next) {
     await postResume(req.body);
     res.json(resPattern("Added", res.statusCode));
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 }
 
@@ -15,7 +15,7 @@ async function updateResume(req, res, next) {
     await changeResume(req.params.id, req.body);
     res.json(resPattern("Updated", res.statusCode));
   } catch (err) {
-    next(err);
+    next(err.message);
   }
 }
 

@@ -8,6 +8,7 @@ const { errorHandler } = require("./handler/errorHandler");
 const serviceRouter = require("./routes/jobRoute");
 const dbConnection = require("./config/database");
 const applicationRouter = require("./routes/applicationRoute");
+const { verifyToken } = require("./middleware/verifyToken");
 
 require("dotenv").config();
 
@@ -24,6 +25,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRoute);
+
+app.use(verifyToken);
 
 app.use("/job", serviceRouter);
 

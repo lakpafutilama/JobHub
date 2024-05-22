@@ -3,8 +3,7 @@ const { decodeJWT } = require("../helpers/generateToken");
 const { getUserFromUsername } = require("../services/userService");
 
 exports.verifyToken = async (req, res, next) => {
-  const check = req.headers.cookie;
-  const token = check.split("=")[1];
+  const token = req.headers.cookie;
   if (!token)
     return res
       .status(422)

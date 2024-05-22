@@ -18,7 +18,7 @@ async function saveUser(data) {
 
 async function deleteUserByUsername(username) {
   try {
-    await User.deleteOne({ username });
+    await User.findOneAndDelete({ username });
   } catch (err) {
     throw err;
   }
