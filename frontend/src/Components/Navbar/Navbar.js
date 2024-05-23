@@ -75,7 +75,7 @@ function Navbar({ toggleSignIn, home }) {
 
   const handleLogout = () => {
     handleClose();
-    localStorage.removeItem("token");
+    document.cookie = "token=";
     navigate("/");
   };
 
