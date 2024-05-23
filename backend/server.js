@@ -10,6 +10,10 @@ const dbConnection = require("./config/database");
 const userRoute = require("./routes/userRoute");
 const serviceRouter = require("./routes/jobRoute");
 const applicationRouter = require("./routes/applicationRoute");
+const {
+  getRegions,
+  getDistricts,
+} = require("./controllers/locationController");
 
 require("dotenv").config();
 
@@ -24,6 +28,10 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.status(200).json(resPattern("Welcome", res.statusCode));
 });
+
+app.get("/regions", getRegions);
+
+app.get("/district/:region", getDistricts);
 
 app.use("/user", userRoute);
 
