@@ -10,7 +10,10 @@ const {
 } = require("../controllers/jobController");
 const { postJobValidator } = require("../validators/postJobValidator");
 const { updateJobValidator } = require("../validators/updateJobValidator");
+const { verifyToken } = require("../middleware/verifyToken");
 const router = express.Router();
+
+router.use(verifyToken);
 
 router.get("/list", jobList);
 

@@ -11,8 +11,11 @@ const {
 const {
   verifyApplicationValidator,
 } = require("../validators/verifyApplicationValidator");
+const { verifyToken } = require("../middleware/verifyToken");
 
 const router = express.Router();
+
+router.use(verifyToken);
 
 router.get("/:type/:id", getApplications);
 

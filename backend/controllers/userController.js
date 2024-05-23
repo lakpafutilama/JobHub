@@ -30,7 +30,14 @@ async function authenticateUser(req, res, next) {
     const payload = req.body;
     const check = await getUserFromEmail(payload.email);
     if (!check)
-      return res.status(400).json(resPattern("User not found", res.statusCode));
+      return res
+        .status(400)
+        .json(
+          resPattern(
+            "User not found!!! \nPlease signup to proceed",
+            res.statusCode
+          )
+        );
 
     const oldPass = decodeJWT(check.password);
     if (payload.password != oldPass)

@@ -2,13 +2,14 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 
-const userRoute = require("./routes/userRoute");
 const { resPattern } = require("./handler/responseHandler");
 const { errorHandler } = require("./handler/errorHandler");
-const serviceRouter = require("./routes/jobRoute");
+
 const dbConnection = require("./config/database");
+
+const userRoute = require("./routes/userRoute");
+const serviceRouter = require("./routes/jobRoute");
 const applicationRouter = require("./routes/applicationRoute");
-const { verifyToken } = require("./middleware/verifyToken");
 
 require("dotenv").config();
 
@@ -25,8 +26,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRoute);
-
-app.use(verifyToken);
 
 app.use("/job", serviceRouter);
 
