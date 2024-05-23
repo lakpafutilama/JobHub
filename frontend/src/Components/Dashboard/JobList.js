@@ -160,7 +160,7 @@ const Modal = ({ applicant, closeModal }) => {
         >
           &times;
         </span>
-        <h2>{applicant.full_name.toUpperCase()}</h2>
+        <h5>{applicant.full_name.toUpperCase()}</h5>
         <iframe
           src={
             (`http://localhost:9000/user/${applicant._id}}`,
