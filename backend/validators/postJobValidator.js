@@ -2,7 +2,6 @@ const Joi = require("joi");
 const { resPattern } = require("../handler/responseHandler");
 
 const schema = Joi.object({
-  username: Joi.string().required(),
   title: Joi.string().required(),
   description: Joi.string(),
   location: Joi.string().required(),

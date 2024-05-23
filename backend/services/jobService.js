@@ -3,15 +3,29 @@ const Job = require("../models/jobModel");
 async function allJobs(filter) {
   try {
     if (filter) return Job.find(filter);
-    return Job.find();
+    return await Job.find();
   } catch (err) {
     throw err;
   }
 }
 
+async function likeJobs(name) {
+  try {
+    const status = "active";
+    return Job.find({
+      status,
+      $or: [
+        { title: { $regex: name, $options: name } },
+        { description: { $regex: name, $options: name } },
+      ],
+    }).limit(5);
+  } catch (err) {
+    throw err;
+  }
+}
 async function specificJobs(username) {
   try {
-    return Job.find({ username });
+    return Job.find({ username, status: "active" });
   } catch (err) {
     throw err;
   }
@@ -57,4 +71,5 @@ module.exports = {
   expireJob,
   editJob,
   deleteJob,
+  likeJobs,
 };

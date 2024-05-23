@@ -37,7 +37,7 @@ const Signup = () => {
     axios
       .post("http://localhost:9000/user/signup", formData)
       .then((res) => {
-        document.cookie = res.data.data;
+        document.cookie = `token=${res.data.data}; path=/;`;
         window.location = "http://localhost:3000/dashboard";
       })
       .catch((err) => {

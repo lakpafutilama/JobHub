@@ -5,7 +5,10 @@ const {
   specificJobs,
   deleteJob,
   editJob,
+  likeJobs,
 } = require("../services/jobService");
+const { findApplicants } = require("../services/applicationService");
+const { getListedUser } = require("../services/userService");
 
 exports.homePage = (req, res, next) => {
   try {
@@ -24,6 +27,18 @@ async function jobList(req, res, next) {
   }
 }
 
+async function searchJobs(req, res, next) {
+  try {
+    const jobList = await likeJobs(req.params.title);
+    console.log(req.params.title);
+    let titles = [];
+    if (jobList.length) titles = jobList.filter((data) => data.title);
+    res.json(resPattern(titles, res.statusCode));
+  } catch (err) {
+    next(err.message);
+  }
+}
+
 async function filteredJobs(req, res, next) {
   try {
     const jobList = await allJobs(req.query);
@@ -35,10 +50,28 @@ async function filteredJobs(req, res, next) {
 
 async function specificJobList(req, res, next) {
   try {
-    const jobList = await specificJobs(req.params.username);
-    res.json(resPattern(jobList, res.statusCode));
+    const jobList = await specificJobs(global._user.username);
+
+    const jobLists = await Promise.all(
+      jobList.map(async (data) => {
+        const userDetails = await findApplicants(data._id.toString());
+        const ids = userDetails.map((data) => {
+          return data.user_id;
+        });
+        console.log(ids);
+        const applicants = await getListedUser(ids);
+        const applicantCount = await applicants.length;
+        return {
+          ...data.toObject(),
+          applicant: applicantCount || 0,
+          applicants,
+        };
+      })
+    );
+
+    res.json(resPattern(jobLists, res.statusCode));
   } catch (err) {
-    next(err.message);
+    next(err);
   }
 }
 
@@ -46,8 +79,9 @@ async function addJob(req, res, next) {
   try {
     const data = req.body;
     data.description = data.description || "";
+    data.username = global._user.username;
     await postJob(data);
-    res.json(resPattern("Added", res.statusCode));
+    res.json(resPattern("Post added successfully", res.statusCode));
   } catch (err) {
     next(err.message);
   }
@@ -91,4 +125,5 @@ module.exports = {
   closeJob,
   changeJobDetail,
   removeJob,
+  searchJobs,
 };

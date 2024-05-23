@@ -7,6 +7,7 @@ const {
   closeJob,
   changeJobDetail,
   filteredJobs,
+  searchJobs,
 } = require("../controllers/jobController");
 const { postJobValidator } = require("../validators/postJobValidator");
 const { updateJobValidator } = require("../validators/updateJobValidator");
@@ -19,7 +20,9 @@ router.get("/list", jobList);
 
 router.get("/filtered", filteredJobs);
 
-router.get("/list/:username", specificJobList);
+router.get("/list/specific", specificJobList);
+
+router.get("/search/:title", searchJobs);
 
 router.post("/", postJobValidator, addJob);
 

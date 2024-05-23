@@ -35,6 +35,15 @@ async function getUserId(username) {
   return data.id;
 }
 
+const getListedUser = async (ids) => {
+  try {
+    const data = await User.find({ _id: { $in: ids } });
+    return data;
+  } catch (error) {
+    throw new Error("Error fetching listed users: " + error.message);
+  }
+};
+
 module.exports = {
   getUserFromUsername,
   getUserFromEmail,
@@ -42,4 +51,5 @@ module.exports = {
   deleteUserByUsername,
   countUsers,
   getUserId,
+  getListedUser,
 };

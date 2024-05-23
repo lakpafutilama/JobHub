@@ -9,6 +9,15 @@ async function jobApplication(type, type_id) {
   }
 }
 
+async function findApplicants(job_id) {
+  try {
+    if (!job_id) return null;
+    return await Application.find({ job_id });
+  } catch (err) {
+    throw err;
+  }
+}
+
 async function applicationByDate(date) {
   try {
     return await Application.find({ where: { application_date: date } });
@@ -38,4 +47,5 @@ module.exports = {
   applicationByDate,
   addApplication,
   changeStatus,
+  findApplicants,
 };
