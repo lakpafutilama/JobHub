@@ -5,18 +5,17 @@ import Paper from "@mui/material/Paper";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
 
-// Styled Paper component with frosted glass effect
-const FrostedPaper = styled(Paper)(({ theme }) => ({
-  background: "rgba(255, 255, 255, 0.4)", // Semi-transparent background color
-  backdropFilter: "blur(5px)", // Blur effect
-  WebkitBackdropFilter: "blur(10px)", // For Safari support
-  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Box shadow for depth
+const FrostedPaper = styled(Paper)(({}) => ({
+  background: "rgba(255, 255, 255, 0.6)",
+  backdropFilter: "blur(5px)",
+  WebkitBackdropFilter: "blur(10px)",
+  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
   padding: "20px",
   alignItems: "center",
-  height: '50vh',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center'
+  height: "50vh",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
 }));
 
 const Signin = () => {
@@ -30,7 +29,7 @@ const Signin = () => {
       password,
     };
     axios
-      .post("http://localhost:9000/login", userDetails)
+      .post("http://localhost:9000/user/login", userDetails)
       .then((res) => {
         document.cookie = res.data.data;
         window.location = "http://localhost:3000/dashboard";

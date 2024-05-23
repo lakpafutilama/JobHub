@@ -1,19 +1,41 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./Signup.css";
+import { styled } from "@mui/system";
+import Input from "@mui/material/Input";
+import Paper from "@mui/material/Paper";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
+
+const FrostedPaper = styled(Paper)(({}) => ({
+  background: "rgba(255, 255, 255, 0.6)",
+  color: "black",
+  backdropFilter: "blur(5px)",
+  WebkitBackdropFilter: "blur(10px)",
+  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+  padding: "20px",
+  alignItems: "center",
+  height: "50vh",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+}));
 
 const Signup = () => {
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
-    role: "user",
     password: "",
   });
+
+  const [open, setOpen] = useState(false);
 
   const handleSignup = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:9000/signup", formData)
+      .post("http://localhost:9000/user/signup", formData)
       .then((res) => {
         document.cookie = res.data.data;
         window.location = "http://localhost:3000/dashboard";
@@ -31,56 +53,89 @@ const Signup = () => {
     });
   };
 
-  const handleDropdownChange = (event) => {
-    const { value } = event.target;
+  const handleSelectChange = (event) => {
     setFormData({
       ...formData,
-      role: value,
+      role: event.target.value,
     });
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
   };
 
   return (
     <div id="signupform">
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSignup}>
-        <input
-          placeholder="Enter your full name"
-          name="full_name"
-          value={formData.full_name}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Enter email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Enter password"
-          name="password"
-          value={formData.password}
-          onChange={handleInputChange}
-          required
-        />
-        <label>Signup as: </label>
-        <div className="role-container">
-          <select
-            id="selectedOption"
-            name="role"
-            value={formData.role}
-            onChange={handleDropdownChange}
+      <FrostedPaper elevation={3}>
+        <h2>Sign Up</h2>
+        <form onSubmit={handleSignup}>
+          <Input
+            type="name"
+            placeholder="Enter your full name"
+            name="full_name"
+            value={formData.full_name}
+            onChange={handleInputChange}
             required
-          >
-            <option value="user">User</option>
-            <option value="organization">Organization</option>
-          </select>
-        </div>
-        <button type="submit">Signup</button>
-      </form>
+            fullWidth
+            sx={{ marginBottom: 2 }}
+          />
+          <Input
+            type="email"
+            placeholder="Enter email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+            fullWidth
+            sx={{ marginBottom: 2 }}
+          />
+          <Input
+            type="password"
+            placeholder="Enter password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+            fullWidth
+            sx={{ marginBottom: 2 }}
+          />
+          <div>
+            <FormControl
+              sx={{
+                m: 1,
+                minWidth: 200,
+                marginBottom: 8,
+              }}
+            >
+              <InputLabel id="role-select-label">Signup as</InputLabel>
+              <Select
+                labelId="role-select-label"
+                id="role-select"
+                open={open}
+                onClose={handleClose}
+                onOpen={handleOpen}
+                value={formData.role}
+                label="role"
+                onChange={handleSelectChange}
+                sx={{
+                  height: 45,
+                }}
+              >
+                <MenuItem value={"user"}>User</MenuItem>
+                <MenuItem value={"organization"}>Organization</MenuItem>
+                <MenuItem value={"admin"}>Admin</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <Button type="submit" variant="contained">
+            Signup
+          </Button>
+        </form>
+      </FrostedPaper>
     </div>
   );
 };
