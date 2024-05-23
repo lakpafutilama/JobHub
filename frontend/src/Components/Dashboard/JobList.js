@@ -138,8 +138,14 @@ const Modal = ({ applicant, closeModal }) => {
         <span className="close" onClick={closeModal}>
           &times;
         </span>
-        <h2>{applicant.username}'s Resume</h2>
-        {/* Display applicant's resume information here */}
+        <h2>{applicant._id}'s Resume</h2>
+        <iframe
+          src={
+            ("http://localhost:9000/user/:id",
+            { headers: { token: getCookie() } })
+          }
+          style={{ width: "100%", height: "500px" }}
+        />
       </div>
     </div>
   );
