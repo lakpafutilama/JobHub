@@ -9,7 +9,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 
-const FrostedPaper = styled(Paper)(({}) => ({
+const FrostedPaper = styled(Paper)(({ theme }) => ({
   background: "rgba(255, 255, 255, 0.6)",
   color: "black",
   backdropFilter: "blur(5px)",
