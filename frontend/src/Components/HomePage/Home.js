@@ -50,9 +50,10 @@ const Home = () => {
               <li className="aboutItem">
                 <div className="aboutItemText">
                   <p>
-                    In the modern job search process, it bridges the gap between
-                    employers and job searchers. JobHub is a platform designed
-                    to help you find the perfect job. It provide a comprehensive
+                    In the modern job search process, JobHub bridges the gap
+                    between employers and job searchers. This is a platform
+                    designed to help users find the perfect job and organization
+                    to search efficient employers. It provide a comprehensive
                     job search experience, connecting job seekers with various
                     industries. Their wide range of tools and services
                     streamlines the hiring and job search processes, making it

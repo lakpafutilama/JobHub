@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 
 const FrostedPaper = styled(Paper)(({ theme }) => ({
-  background: "rgba(255, 255, 255, 0.6)",
+  background: "rgba(255, 255, 255, 0.7)",
   color: "black",
   backdropFilter: "blur(5px)",
   WebkitBackdropFilter: "blur(10px)",

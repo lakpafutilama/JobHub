@@ -98,7 +98,7 @@ function Navbar({ toggleSignIn, home }) {
               <a href="#contact">Contact</a>
             </li>
             <li>
-              <button onClick={toggleSignIn}>Signin</button>
+              <button onClick={toggleSignIn}>Login</button>
             </li>
           </ul>
           <div className="mobile-menu-icon">
@@ -123,7 +123,7 @@ function Navbar({ toggleSignIn, home }) {
               <a href="#contact">Contact</a>
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <button onClick={toggleSignIn}>Signin</button>
+              <button onClick={toggleSignIn}>Login</button>
             </MenuItem>
           </StyledMenu>
         </>
