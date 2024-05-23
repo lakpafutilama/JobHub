@@ -5,7 +5,8 @@ import "./JobList.css";
 
 const JobList = ({ deleteJob, openEditModal }) => {
   const [jobs, setJobs] = useState([]);
-  const [selectedApplicants, setSelectedApplicants] = useState([]);
+  const [selectedApplicant, setSelectedApplicant] = useState(null);
+  const [showModal, setShowModal] = useState(false); // State to manage modal visibility
   const token = getCookie();
 
   useEffect(() => {
@@ -46,8 +47,13 @@ const JobList = ({ deleteJob, openEditModal }) => {
     }
   };
 
-  const handleApplicantClick = (applicants) => {
-    setSelectedApplicants(applicants);
+  const openApplicantModal = (applicant) => {
+    setSelectedApplicant(applicant);
+    setShowModal(true); // Show modal when View Resume button is clicked
+  };
+
+  const closeModal = () => {
+    setShowModal(false); // Close modal
   };
 
   return (
@@ -84,29 +90,21 @@ const JobList = ({ deleteJob, openEditModal }) => {
               </button>
             </div>
             <div>
-              <p>Applicants:</p>
-              <ul>
+              <p>Applicants: {job.applicant}</p>
+              <ol style={{ fontSize: 18 }}>
                 {job.applicants.map((applicant) => (
-                  <li
-                    key={applicant.username}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => handleApplicantClick(applicant)}
-                  >
-                    {applicant.user_id}
+                  <li key={applicant._id}>
+                    {applicant.username}
+                    <button
+                      onClick={() => openApplicantModal(applicant)}
+                      style={{ backgroundColor: "blue", marginLeft: 25 }}
+                    >
+                      View Resume
+                    </button>
                   </li>
                 ))}
-              </ul>
+              </ol>
             </div>
-            {selectedApplicants.length > 0 && (
-              <div>
-                <h4>Selected Applicants</h4>
-                <ul>
-                  {selectedApplicants.map((applicant) => (
-                    <li key={applicant._id}>{applicant.username}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
         ))
       ) : (
@@ -124,6 +122,25 @@ const JobList = ({ deleteJob, openEditModal }) => {
           <br />
         </div>
       )}
+
+      {showModal &&
+        selectedApplicant && ( // Render modal conditionally
+          <Modal applicant={selectedApplicant} closeModal={closeModal} />
+        )}
+    </div>
+  );
+};
+
+const Modal = ({ applicant, closeModal }) => {
+  return (
+    <div className="modal">
+      <div className="modal-content">
+        <span className="close" onClick={closeModal}>
+          &times;
+        </span>
+        <h2>{applicant.username}'s Resume</h2>
+        {/* Display applicant's resume information here */}
+      </div>
     </div>
   );
 };
