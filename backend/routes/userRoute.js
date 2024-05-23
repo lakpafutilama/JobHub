@@ -9,8 +9,13 @@ const { loginValidator } = require("../validators/loginValidator");
 const {
   addResume,
   updateResume,
+  viewResume,
 } = require("../controllers/candidateController");
+const { verifyToken } = require("../middleware/verifyToken");
+
 const router = express.Router();
+
+router.get("/:id", verifyToken, viewResume);
 
 router.post("/signup", signupValidator, registerUser);
 

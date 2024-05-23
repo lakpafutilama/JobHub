@@ -1,5 +1,18 @@
 const { resPattern } = require("../handler/responseHandler");
-const { postResume, changeResume } = require("../services/candidateService");
+const {
+  postResume,
+  changeResume,
+  getResume,
+} = require("../services/candidateService");
+
+async function viewResume(req, res, next) {
+  try {
+    const file = await getResume(req.params.id);
+    res.json(resPattern(file || {}, res.statusCode));
+  } catch (err) {
+    next(err.message);
+  }
+}
 
 async function addResume(req, res, next) {
   try {
@@ -19,4 +32,4 @@ async function updateResume(req, res, next) {
   }
 }
 
-module.exports = { addResume, updateResume };
+module.exports = { viewResume, addResume, updateResume };

@@ -1,5 +1,13 @@
 const Detail = require("../models/candidateModel");
 
+async function getResume(id) {
+  try {
+    return await Detail.findById(id);
+  } catch (err) {
+    throw err;
+  }
+}
+
 async function postResume(data) {
   try {
     await Detail.create(data);
@@ -16,4 +24,4 @@ async function changeResume(id, data) {
   }
 }
 
-module.exports = { postResume, changeResume };
+module.exports = { getResume, postResume, changeResume };
