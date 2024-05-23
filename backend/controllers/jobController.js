@@ -30,7 +30,6 @@ async function jobList(req, res, next) {
 async function searchJobs(req, res, next) {
   try {
     const jobList = await likeJobs(req.params.title);
-    console.log(req.params.title);
     let titles = [];
     if (jobList.length) titles = jobList.filter((data) => data.title);
     res.json(resPattern(titles, res.statusCode));
@@ -58,7 +57,6 @@ async function specificJobList(req, res, next) {
         const ids = userDetails.map((data) => {
           return data.user_id;
         });
-        console.log(ids);
         const applicants = await getListedUser(ids);
         const applicantCount = await applicants.length;
         return {
