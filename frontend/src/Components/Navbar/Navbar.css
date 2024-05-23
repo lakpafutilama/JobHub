@@ -52,8 +52,7 @@ nav {
 }
 
 #navbar li a:hover {
-  font-weight: bolder;
-  color: purple;
+  text-decoration-line: underline;
 }
 
 .mobile-menu-icon {
@@ -82,4 +81,8 @@ nav {
   cursor: pointer;
   font-size: 2rem;
   color: white;
+}
+
+a {
+  color: black;
 }
