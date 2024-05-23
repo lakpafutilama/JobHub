@@ -19,7 +19,7 @@ const schema = Joi.object({
         "Password must contain alphanumeric (upper and lower case) and special character",
     })
     .required(),
-  role: Joi.string().valid("user", "organization").required(),
+  role: Joi.string().valid("user", "organization", "admin").required(),
 });
 
 exports.signupValidator = async (req, res, next) => {
