@@ -8,6 +8,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 const FrostedPaper = styled(Paper)(({ theme }) => ({
   background: "rgba(255, 255, 255, 0.7)",
@@ -24,6 +25,7 @@ const FrostedPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -37,8 +39,13 @@ const Signup = () => {
     axios
       .post("http://localhost:9000/user/signup", formData)
       .then((res) => {
-        document.cookie = `token=${res.data.data}; path=/;`;
-        window.location = "http://localhost:3000/dashboard";
+        document.cookie = `token=${res.data.data.token}; path=/;`;
+        const userRole = res.data.data.role;
+        if (userRole) {
+          navigate(`/${userRole}-dashboard`);
+        } else {
+          navigate("/");
+        }
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -127,7 +134,6 @@ const Signup = () => {
               >
                 <MenuItem value={"user"}>User</MenuItem>
                 <MenuItem value={"organization"}>Organization</MenuItem>
-                <MenuItem value={"admin"}>Admin</MenuItem>
               </Select>
             </FormControl>
           </div>

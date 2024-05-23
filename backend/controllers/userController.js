@@ -18,8 +18,13 @@ async function registerUser(req, res, next) {
     userData.username = await generateUsername(userData.full_name);
     userData.password = generatePass(userData.password);
     await saveUser(userData);
-    const token = generateJWT({ username: userData.username });
-    res.status(200).json(resPattern(token, res.statusCode));
+    const token = generateJWT({
+      username: userData.username,
+      role: userData.role,
+    });
+    res
+      .status(200)
+      .json(resPattern({ token, role: userData.role }, res.statusCode));
   } catch (err) {
     next(err.message);
   }
@@ -43,8 +48,10 @@ async function authenticateUser(req, res, next) {
     if (payload.password != oldPass)
       return res.status(422).json(resPattern("Wrong password", res.statusCode));
 
-    const token = generateJWT({ username: check.username });
-    res.status(200).json(resPattern(token, res.statusCode));
+    const token = generateJWT({ username: check.username, role: check.role });
+    res
+      .status(200)
+      .json(resPattern({ token, role: check.role }, res.statusCode));
   } catch (err) {
     next(err.message);
   }

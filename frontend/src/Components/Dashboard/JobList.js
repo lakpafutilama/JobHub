@@ -134,14 +134,36 @@ const JobList = ({ deleteJob, openEditModal }) => {
 const Modal = ({ applicant, closeModal }) => {
   return (
     <div className="modal">
-      <div className="modal-content">
-        <span className="close" onClick={closeModal}>
+      <div
+        className="modal-content"
+        style={{
+          background: "rgba(255, 255, 255, 0.7)",
+          color: "black",
+          backdropFilter: "blur(5px)",
+          WebkitBackdropFilter: "blur(10px)",
+          maxWidth: "600",
+          padding: "10",
+          border: "1px solid #888",
+          borderRadius: 8,
+        }}
+      >
+        <span
+          className="close"
+          style={{
+            color: "black",
+            float: "right",
+            fontSize: "28",
+            fontWeight: "bold",
+            cursor: "pointer",
+          }}
+          onClick={closeModal}
+        >
           &times;
         </span>
-        <h2>{applicant._id}'s Resume</h2>
+        <h2>{applicant.full_name.toUpperCase()}</h2>
         <iframe
           src={
-            ("http://localhost:9000/user/:id",
+            (`http://localhost:9000/user/${applicant._id}}`,
             { headers: { token: getCookie() } })
           }
           style={{ width: "100%", height: "500px" }}
