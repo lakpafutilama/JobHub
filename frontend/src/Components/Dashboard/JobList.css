@@ -18,11 +18,22 @@ body {
 
 .job-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
 }
 
-.job h4 {
+h1 {
+  color: white;
+  font-size: 26px;
+}
+
+h3 {
+  color: white;
+  font-size: 20px;
+  margin-right: 350px;
+}
+
+h4 {
   color: white;
   font-size: 18px;
 }
@@ -36,7 +47,7 @@ h5 {
 
 .job p {
   color: black;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .job ul {

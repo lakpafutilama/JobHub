@@ -35,6 +35,10 @@ async function getUserId(username) {
   return data.id;
 }
 
+async function updateUser(id, data) {
+  await User.findByIdAndUpdate(id, data);
+}
+
 const getListedUser = async (ids) => {
   try {
     const data = await User.find({ _id: { $in: ids } });
@@ -51,5 +55,6 @@ module.exports = {
   deleteUserByUsername,
   countUsers,
   getUserId,
+  updateUser,
   getListedUser,
 };

@@ -5,6 +5,7 @@ const {
   applicationByDate,
   changeStatus,
 } = require("../services/applicationService");
+const { jobsById } = require("../services/jobService");
 
 async function getApplications(req, res, next) {
   try {
@@ -12,8 +13,19 @@ async function getApplications(req, res, next) {
       return res
         .status(422)
         .json(resPattern("Type must be job or user", res.statusCode));
-    const allApplication = await jobApplication(req.params.type, req.params.id);
-    res.json(resPattern(allApplication, res.statusCode));
+    const allApplication = await jobApplication(
+      req.params.type,
+      global._user._id
+    );
+    const applications = await Promise.all(
+      allApplication.map(async (data) => {
+        return {
+          ...data.toObject(),
+          job: (await jobsById(data.job_id)) ?? {},
+        };
+      })
+    );
+    res.json(resPattern(applications, res.statusCode));
   } catch (err) {
     next(err.message);
   }
@@ -33,6 +45,7 @@ async function applyJob(req, res, next) {
   try {
     const data = req.body;
     data.status = "pending";
+    data.user_id = global._user._id;
     data.application_date = new Date();
     await addApplication(data);
     res.json(resPattern("Added", res.statusCode));

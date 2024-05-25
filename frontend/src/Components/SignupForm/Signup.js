@@ -18,7 +18,7 @@ const FrostedPaper = styled(Paper)(({ theme }) => ({
   boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
   padding: "20px",
   alignItems: "center",
-  height: "50vh",
+  height: "49vh",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -113,9 +113,8 @@ const Signup = () => {
           <div>
             <FormControl
               sx={{
-                m: 1,
-                minWidth: 200,
-                marginBottom: 8,
+                minWidth: 250,
+                marginBottom: 4,
               }}
             >
               <InputLabel id="role-select-label">Signup as</InputLabel>
@@ -129,7 +128,7 @@ const Signup = () => {
                 label="role"
                 onChange={handleSelectChange}
                 sx={{
-                  height: 45,
+                  height: 40,
                 }}
               >
                 <MenuItem value={"user"}>User</MenuItem>

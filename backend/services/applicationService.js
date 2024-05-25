@@ -18,6 +18,15 @@ async function findApplicants(job_id) {
   }
 }
 
+async function countApplicants(job_id) {
+  try {
+    if (!job_id) return null;
+    return await Application.countDocuments({ job_id });
+  } catch (err) {
+    throw err;
+  }
+}
+
 async function applicationByDate(date) {
   try {
     return await Application.find({ where: { application_date: date } });
@@ -48,4 +57,5 @@ module.exports = {
   addApplication,
   changeStatus,
   findApplicants,
+  countApplicants,
 };

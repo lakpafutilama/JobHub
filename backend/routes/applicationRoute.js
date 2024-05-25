@@ -17,7 +17,7 @@ const router = express.Router();
 
 router.use(verifyToken);
 
-router.get("/:type/:id", getApplications);
+router.get("/:type", getApplications);
 
 router.get("/latest", latestApplications);
 

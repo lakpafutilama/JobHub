@@ -5,6 +5,8 @@ import Home from "./Components/HomePage/Home";
 import EmployerDashboard from "./Components/Dashboard/EmployerDashboard";
 import SearchJob from "./Components/Dashboard/SearchJob";
 import UserDashboard from "./Components/Dashboard/UserDashboard";
+import Forbidden from "./Components/Forbidden/Forbidden";
+import Account from "./Components/Account/Account";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path="/organization-dashboard" element={<EmployerDashboard />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/search" element={<SearchJob />} />
+        <Route path="/403" element={<Forbidden />} />
+        <Route path="/myprofile" element={<Account />} />
       </Routes>
     </Router>
   );

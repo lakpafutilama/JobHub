@@ -7,7 +7,10 @@ const {
   editJob,
   likeJobs,
 } = require("../services/jobService");
-const { findApplicants } = require("../services/applicationService");
+const {
+  findApplicants,
+  countApplicants,
+} = require("../services/applicationService");
 const { getListedUser } = require("../services/userService");
 
 exports.homePage = (req, res, next) => {
@@ -20,8 +23,20 @@ exports.homePage = (req, res, next) => {
 
 async function jobList(req, res, next) {
   try {
-    const jobList = await allJobs();
-    res.json(resPattern(jobList, res.statusCode));
+    const jobList = await allJobs({
+      status: "active",
+      user_id: { $ne: global._user._id },
+    });
+    const jobLists = await Promise.all(
+      jobList.map(async (data) => {
+        const applicant = await countApplicants(data._id.toString());
+        return {
+          ...data.toObject(),
+          applicant,
+        };
+      })
+    );
+    res.json(resPattern(jobLists, res.statusCode));
   } catch (err) {
     next(err.message);
   }

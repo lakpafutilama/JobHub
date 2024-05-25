@@ -10,11 +10,14 @@ const {
   getUserFromEmail,
   deleteUserByUsername,
   countUsers,
+  updateUser,
 } = require("../services/userService");
 
 async function registerUser(req, res, next) {
   try {
     const userData = req.body;
+    userData.gender = "male";
+    userData.contact = "";
     userData.username = await generateUsername(userData.full_name);
     userData.password = generatePass(userData.password);
     await saveUser(userData);
@@ -58,18 +61,41 @@ async function authenticateUser(req, res, next) {
 }
 
 async function generateUsername(fullname) {
-  const full_name = fullname.split(" ");
-  const username = `${full_name[0]}.${
-    full_name[full_name.length - 1]
-  }`.toLowerCase();
-  const count = await countUsers(username);
-  return count == 0 ? username : `${username}${count}`;
+  try {
+    const full_name = fullname.split(" ");
+    const username = `${full_name[0]}.${
+      full_name[full_name.length - 1]
+    }`.toLowerCase();
+    const count = await countUsers(username);
+    return count == 0 ? username : `${username}${count}`;
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function editUser(req, res, next) {
+  try {
+    const id = global._user._id;
+    const data = {
+      full_name: req.body.full_name,
+      gender: req.body.gender,
+      contact: req.body.contact,
+    };
+    await updateUser(id, req.body);
+    res.status(200).json(resPattern(`Updated`, res.statusCode));
+  } catch (err) {
+    next(err);
+  }
 }
 
 async function deleteUser(req, res, next) {
-  const username = req.params.username;
-  await deleteUserByUsername(username);
-  res.status(200).json(resPattern(`${username} deleted`, res.statusCode));
+  try {
+    const username = req.params.username;
+    await deleteUserByUsername(username);
+    res.status(200).json(resPattern(`${username} deleted`, res.statusCode));
+  } catch (err) {
+    next(err);
+  }
 }
 
-module.exports = { registerUser, authenticateUser, deleteUser };
+module.exports = { registerUser, authenticateUser, editUser, deleteUser };

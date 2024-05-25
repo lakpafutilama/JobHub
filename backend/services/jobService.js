@@ -2,8 +2,16 @@ const Job = require("../models/jobModel");
 
 async function allJobs(filter) {
   try {
-    if (filter) return Job.find(filter);
+    if (filter) return await Job.find(filter);
     return await Job.find();
+  } catch (err) {
+    throw err;
+  }
+}
+
+async function jobsById(id) {
+  try {
+    return await Job.findById(id);
   } catch (err) {
     throw err;
   }
@@ -66,6 +74,7 @@ async function deleteJob(id) {
 
 module.exports = {
   allJobs,
+  jobsById,
   specificJobs,
   postJob,
   expireJob,

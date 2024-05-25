@@ -12,7 +12,7 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import "./EmployerDashboard.css";
+import "./Dashboard.css";
 import { getCookie } from "../../helper/AccessToken";
 import { useNavigate } from "react-router-dom";
 
@@ -207,7 +207,7 @@ const EmployerDashboard = () => {
   return (
     <>
       <Navbar toggleSignIn={null} />
-      <div className="employer-dashboard">
+      <div className="dashboard">
         <Button
           variant="outlined"
           color="primary"
@@ -231,10 +231,14 @@ const EmployerDashboard = () => {
             onClick={handleHistoryModalOpen}
             style={{ backgroundColor: "grey" }}
           >
-            History
+            Archive
           </Button>
         </div>
-        <JobList deleteJob={deleteJob} openEditModal={handleEditModalOpen} />
+        <JobList
+          deleteJob={deleteJob}
+          openEditModal={handleEditModalOpen}
+          role={"organization"}
+        />
       </div>
 
       <Modal open={open} onClose={handleClose}>
@@ -367,7 +371,7 @@ const EmployerDashboard = () => {
             {jobHistory.map((job) => (
               <div key={job._id} className="job">
                 <div className="job-header">
-                  <h4>{job.title}</h4>
+                  <h3>{job.title}</h3>
                 </div>
                 <div>
                   <p>Description: {job.description}</p>

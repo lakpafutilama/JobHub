@@ -6,7 +6,7 @@ const ViewList = ({ searchJobs }) => {
     <div className="job-listings">
       <h3>Search Jobs</h3>
       {searchJobs.map((job) => (
-        <div key={job.id} className="job">
+        <div key={job.id} className="job" style={{ marginRight: "100px" }}>
           <h4>{job.title}</h4>
           <p>{job.description}</p>
         </div>

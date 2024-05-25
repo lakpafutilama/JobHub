@@ -73,6 +73,10 @@ function Navbar({ toggleSignIn, home }) {
     setMobileMenuEl(null);
   };
 
+  const handleAccount = () => {
+    navigate(`/myaccount`);
+  };
+
   const handleLogout = () => {
     handleClose();
     document.cookie = "token=";
@@ -140,7 +144,7 @@ function Navbar({ toggleSignIn, home }) {
             open={open}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose} disableRipple>
+            <MenuItem onClick={handleAccount} disableRipple>
               <ManageAccountsIcon />
               Profile
             </MenuItem>

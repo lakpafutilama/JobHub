@@ -1,78 +1,202 @@
 import React, { useState, useEffect } from "react";
-
-// Dummy data for job listings
-const dummyJobs = [
-  {
-    id: 1,
-    title: "Software Engineer",
-    company: "ABC Inc",
-    location: "New York",
-  },
-  {
-    id: 2,
-    title: "Web Developer",
-    company: "XYZ Corp",
-    location: "San Francisco",
-  },
-  {
-    id: 3,
-    title: "Data Analyst",
-    company: "123 Industries",
-    location: "Chicago",
-  },
-];
-
-// Dummy data for applicant profiles
-const dummyApplicants = [
-  { id: 1, name: "John Doe", skills: ["JavaScript", "React", "Node.js"] },
-  { id: 2, name: "Jane Smith", skills: ["Python", "Django", "SQL"] },
-  { id: 3, name: "Alice Johnson", skills: ["Java", "Spring", "Hibernate"] },
-];
+import Navbar from "../Navbar/Navbar";
+import axios from "axios";
+import JobList from "./JobList.js";
+import { Button, Box, Modal, TextField } from "@mui/material";
+import "./Dashboard.css";
+import { getCookie } from "../../helper/AccessToken";
+import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
+  const navigate = useNavigate();
+  const token = getCookie();
   const [jobs, setJobs] = useState([]);
-  const [applicants, setApplicants] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [jobHistory, setJobHistory] = useState([]);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [newJob, setNewJob] = useState({
+    resume: null,
+    summary: "",
+  });
 
-  // Fetch data (dummy data in this case)
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const applyJob = async (id) => {
+    try {
+      await axios.delete(`http://localhost:9000/job/${id}`, {
+        headers: {
+          token,
+        },
+      });
+
+      const updatedJobs = jobs.filter((job) => job._id !== id);
+      setJobs(updatedJobs);
+    } catch (error) {
+      console.error("Error deleting job:", error);
+    }
+  };
+
   useEffect(() => {
-    // Simulating API call to fetch job listings
-    setTimeout(() => {
-      setJobs(dummyJobs);
-    }, 1000);
+    axios
+      .get(`http://localhost:9000/application/user`, {
+        headers: {
+          token,
+        },
+      })
+      .then((response) => {
+        console.log("data", response.data);
+        setJobHistory(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching job history:", error);
+      });
+  }, [token]);
 
-    // Simulating API call to fetch applicant profiles
-    setTimeout(() => {
-      setApplicants(dummyApplicants);
-    }, 1500);
-  }, []);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:9000/job/list`, {
+        headers: {
+          token,
+        },
+      })
+      .then((response) => {
+        setJobs(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching job list:", error);
+      });
+  }, [token]);
+
+  const handleHistoryModalOpen = () => {
+    setShowHistoryModal(true);
+  };
+
+  const handleHistoryModalClose = () => {
+    setShowHistoryModal(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "resume") {
+      setNewJob({ ...newJob, resume: files[0] });
+    } else {
+      setNewJob({ ...newJob, [name]: value });
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (newJob.resume && newJob.summary) {
+      const formData = new FormData();
+      formData.append("resume", newJob.resume);
+      formData.append("summary", newJob.summary);
+
+      try {
+        const response = await axios.post(
+          "http://localhost:9000/user/resume",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              token,
+            },
+          }
+        );
+        alert(response.data.data);
+        setNewJob({ resume: null, summary: "" });
+        setOpen(false);
+        window.location.reload();
+      } catch (err) {
+        alert(err.response.data.message);
+      }
+    }
+  };
 
   return (
-    <div className="user-dashboard">
-      <h2>Welcome to JOBHUB</h2>
-
-      <div className="job-listings">
-        <h3>Job Listings</h3>
-        <ul>
-          {jobs.map((job) => (
-            <li key={job.id}>
-              <strong>{job.title}</strong> - {job.company} ({job.location})
-            </li>
-          ))}
-        </ul>
+    <>
+      <Navbar toggleSignIn={null} />
+      <div className="dashboard">
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => {
+            navigate("/search");
+          }}
+        >
+          Search Jobs
+        </Button>
+        <div className="create-button-container">
+          {/* <Button
+            variant="contained"
+            color="primary"
+            onClick={handleOpen}
+            style={{ marginRight: 10 }}
+          >
+            Upload Resume
+          </Button> */}
+          <Button
+            variant="contained"
+            onClick={handleHistoryModalOpen}
+            style={{ backgroundColor: "grey" }}
+          >
+            Archive
+          </Button>
+        </div>
+        <JobList deleteJob={applyJob} openEditModal={""} role={"user"} />
       </div>
+      <Modal open={open} onClose={handleClose}>
+        <Box className="modal-box">
+          <TextField
+            label="Summary"
+            name="summary"
+            value={newJob.summary}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
+          <input
+            type="file"
+            name="resume"
+            onChange={handleInputChange}
+            accept=".pdf,.doc,.docx"
+            style={{ margin: "20px 0" }}
+          />
+          <Button variant="contained" color="success" onClick={handleSubmit}>
+            Add
+          </Button>
+        </Box>
+      </Modal>
 
-      <div className="applicant-profiles">
-        <h3>Your Applicants</h3>
-        <ul>
-          {applicants.map((applicant) => (
-            <li key={applicant.id}>
-              <strong>{applicant.name}</strong> - Skills:{" "}
-              {applicant.skills.join(", ")}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+      <Modal open={showHistoryModal} onClose={handleHistoryModalClose}>
+        <Box
+          className="modal-box"
+          style={{ maxHeight: "80vh", overflowY: "auto" }}
+        >
+          <h2>Job History</h2>
+          <div>
+            {jobHistory.map((job) => (
+              <div key={job.job._id} className="job">
+                <div className="job-header">
+                  <h3>{job.job.title}</h3>
+                </div>
+                <div>
+                  <p>Description: {job.job.description}</p>
+                </div>
+                <div>
+                  <p>Location: {job.job.location}</p>
+                </div>
+                <div>
+                  <p>Job Status: {job.job.status}</p>
+                </div>
+                <div>
+                  <p>User Status: {job.status}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Box>
+      </Modal>
+    </>
   );
 };
 
