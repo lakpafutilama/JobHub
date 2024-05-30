@@ -86,13 +86,12 @@ const UserDashboard = () => {
   };
 
   const handleSubmit = async () => {
-    if (newJob.resume && newJob.summary) {
+    if (newJob.resume) {
       const formData = new FormData();
       formData.append("resume", newJob.resume);
-      formData.append("summary", newJob.summary);
 
       try {
-        const response = await axios.post(
+        const response = await axios.put(
           "http://localhost:9000/user/resume",
           formData,
           {

@@ -108,7 +108,12 @@ const Home = () => {
         <div className="footer" id="contact">
           <div className="footer__content grid text__light text__center">
             <div className="footer__content--item">
-              <a href="mailto:lakpa.lama4433@gmail.com">jobhub@gmail.com</a>
+              <a
+                href="mailto:lakpa.lama4433@gmail.com"
+                style={{ color: "blueviolet" }}
+              >
+                jobhub@gmail.com
+              </a>
               <span>
                 <br />
                 <br />
@@ -117,7 +122,6 @@ const Home = () => {
             </div>
 
             <div className="footer__content--item">
-              <h3 className="footer__title">Learn</h3>
               <ul className="footer__links">
                 <li>
                   <a href="/#about">About</a>
@@ -129,7 +133,6 @@ const Home = () => {
             </div>
 
             <div className="footer__content--item">
-              <h3 className="footer__title">News</h3>
               <ul className="footer__links">
                 <li>
                   <a href="/#">Events</a>
@@ -144,7 +147,6 @@ const Home = () => {
             </div>
 
             <div className="footer__content--item">
-              <h3 className="footer__title">Social Links</h3>
               <ul className="footer__links">
                 <li>
                   <a href="/#">Facebook</a>

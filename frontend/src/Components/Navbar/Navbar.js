@@ -74,7 +74,7 @@ function Navbar({ toggleSignIn, home }) {
   };
 
   const handleAccount = () => {
-    navigate(`/myaccount`);
+    navigate(`/myprofile`);
   };
 
   const handleLogout = () => {

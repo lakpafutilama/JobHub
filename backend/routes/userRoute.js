@@ -13,9 +13,22 @@ const {
   viewResume,
   userDetail,
 } = require("../controllers/candidateController");
+const multer = require("multer");
 const { verifyToken } = require("../middleware/verifyToken");
+const path = require("path");
 
 const router = express.Router();
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "..", "uploads"));
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 router.get("/", verifyToken, userDetail);
 
@@ -27,10 +40,10 @@ router.post("/login", loginValidator, authenticateUser);
 
 router.put("/", verifyToken, editUser);
 
-router.post("/resume", addResume);
+router.post("/resume", verifyToken, upload.single("resume"), addResume);
 
-router.put("/resume/:id", updateResume);
+router.put("/resume/:id", verifyToken, updateResume);
 
-router.delete("/:username", deleteUser);
+router.delete("/:username", verifyToken, deleteUser);
 
 module.exports = router;

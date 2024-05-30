@@ -4,19 +4,6 @@ const {
   changeResume,
   getResume,
 } = require("../services/candidateService");
-const multer = require("multer");
-const path = require("path");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-
-const upload = multer({ storage: storage });
 
 async function viewResume(req, res, next) {
   try {
@@ -29,21 +16,20 @@ async function viewResume(req, res, next) {
 
 async function addResume(req, res, next) {
   try {
-    upload.single("resume");
-    const { summary } = req.body;
     const resume = req.file;
-    console.log(resume);
+    console.log(req.body);
 
-    if (!summary || !resume) {
+    if (!resume) {
       return res
-        .status(400)
-        .json({ message: "Summary and resume are required" });
+        .status(422)
+        .json(resPattern("Resume required", res.statusCode));
     }
 
-    await postResume({ summary, resumePath: resume.path });
+    // await postResume({ resumePath: resume.path });
 
     res.json({ message: "Added", status: res.statusCode });
   } catch (err) {
+    console.log(err);
     next(err.message);
   }
 }
