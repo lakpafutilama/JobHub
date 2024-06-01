@@ -77,7 +77,7 @@ const Account = () => {
     formData.append("photo", file);
 
     axios
-      .post("http://localhost:9000/user/update-photo", formData, {
+      .put("http://localhost:9000/user/pic", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           token: getCookie(),

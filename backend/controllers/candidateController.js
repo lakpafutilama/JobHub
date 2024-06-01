@@ -19,11 +19,11 @@ async function addResume(req, res, next) {
     const resume = req.file;
     console.log(req.body);
 
-    if (!resume) {
-      return res
-        .status(422)
-        .json(resPattern("Resume required", res.statusCode));
-    }
+    // if (!resume) {
+    //   return res
+    //     .status(422)
+    //     .json(resPattern("Resume required", res.statusCode));
+    // }
 
     // await postResume({ resumePath: resume.path });
 

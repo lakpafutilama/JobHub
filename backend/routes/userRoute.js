@@ -1,9 +1,11 @@
 const express = require("express");
+const path = require("path");
 const {
   registerUser,
   authenticateUser,
   deleteUser,
   editUser,
+  editPP,
 } = require("../controllers/userController");
 const { signupValidator } = require("../validators/signupValidator");
 const { loginValidator } = require("../validators/loginValidator");
@@ -13,12 +15,10 @@ const {
   viewResume,
   userDetail,
 } = require("../controllers/candidateController");
-const multer = require("multer");
 const { verifyToken } = require("../middleware/verifyToken");
-const path = require("path");
+const multer = require("multer");
 
-const router = express.Router();
-
+// Configure Multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "..", "uploads"));
@@ -28,7 +28,11 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const uploader = multer({
+  storage: storage,
+});
+
+const router = express.Router();
 
 router.get("/", verifyToken, userDetail);
 
@@ -40,7 +44,15 @@ router.post("/login", loginValidator, authenticateUser);
 
 router.put("/", verifyToken, editUser);
 
-router.post("/resume", verifyToken, upload.single("resume"), addResume);
+router.put("/pic", verifyToken, uploader.single("file"), (req, res, next) => {
+  try {
+    editPP(req, res);
+  } catch (error) {
+    console.log("here");
+  }
+});
+
+router.post("/resume", verifyToken, addResume);
 
 router.put("/resume/:id", verifyToken, updateResume);
 

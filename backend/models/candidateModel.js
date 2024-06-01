@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const candidateSchema = new mongoose.Schema({
   id: { type: Number, ref: "users" },
-  resume: { type: Buffer, required: true },
+  resume: { type: String, required: true },
   rate: { type: Number },
 });
 

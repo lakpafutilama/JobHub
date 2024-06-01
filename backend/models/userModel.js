@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
     gender: { type: String, enum: ["male", "female", "other"] },
     contact: { type: String },
     role: { type: String, enum: ["user", "organization"] },
+    pp: { type: String },
   },
   { timestamps: true }
 );

@@ -12,6 +12,7 @@ const {
   countUsers,
   updateUser,
 } = require("../services/userService");
+const { uploadImage } = require("../middleware/upload");
 
 async function registerUser(req, res, next) {
   try {
@@ -88,6 +89,23 @@ async function editUser(req, res, next) {
   }
 }
 
+async function editPP(req, res, next) {
+  try {
+    const data = await uploadImage(req.file.path);
+    const id = global._user._id;
+    const result = {
+      pp: data.secure_url,
+    };
+    await updateUser(id, result);
+    res
+      .status(200)
+      .json(resPattern(`Uploaded profile picture`, res.statusCode));
+  } catch (err) {
+    console.log(err);
+    next(err.message);
+  }
+}
+
 async function deleteUser(req, res, next) {
   try {
     const username = req.params.username;
@@ -98,4 +116,10 @@ async function deleteUser(req, res, next) {
   }
 }
 
-module.exports = { registerUser, authenticateUser, editUser, deleteUser };
+module.exports = {
+  registerUser,
+  authenticateUser,
+  editUser,
+  editPP,
+  deleteUser,
+};
