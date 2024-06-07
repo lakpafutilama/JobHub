@@ -108,34 +108,6 @@ const Account = () => {
       });
   };
 
-  const handleUploadResume = (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("resume", file);
-
-    axios
-      .post("http://localhost:9000/user/resume", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          token: getCookie(),
-        },
-      })
-      .then((response) => {
-        const updatedUserDetails = {
-          ...userDetails,
-          resume: response.data.resume,
-        };
-        setUserDetails(updatedUserDetails);
-        setSnackbarMessage("Resume updated");
-        setSnackbarOpen(true);
-      })
-      .catch((error) => {
-        console.error("Error uploading resume:", error);
-        setSnackbarMessage("Error uploading resume");
-        setSnackbarOpen(true);
-      });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -288,9 +260,7 @@ const Account = () => {
                       variant="contained"
                       color="info"
                       fullWidth
-                      onClick={() => {
-                        /* Handle View Resume */
-                      }}
+                      onClick={() => {}}
                     >
                       View Resume
                     </Button>
@@ -332,14 +302,6 @@ const Account = () => {
       </Grid>
       <Modal open={open} onClose={handleClose}>
         <Box className="modal-box">
-          <TextField
-            label="Summary"
-            name="summary"
-            value={newJob.summary}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
           <input
             type="file"
             name="resume"

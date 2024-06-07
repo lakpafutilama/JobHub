@@ -4,6 +4,7 @@ const {
   postResume,
   changeResume,
   getResumeByUser,
+  getResume,
 } = require("../services/candidateService");
 
 async function viewResume(req, res, next) {
@@ -29,7 +30,9 @@ async function addResume(req, res, next) {
       user_id: id,
       resume: data.secure_url,
     };
-    await postResume(result);
+    const check = await getResumeByUser(id);
+    if (check) await changeResume(check.id, result);
+    else await postResume(result);
 
     res.json({ message: "Added", status: res.statusCode });
   } catch (err) {
@@ -45,13 +48,4 @@ async function userDetail(req, res, next) {
   }
 }
 
-async function updateResume(req, res, next) {
-  try {
-    await changeResume(req.params.id, req.body);
-    res.json(resPattern("Updated", res.statusCode));
-  } catch (err) {
-    next(err.message);
-  }
-}
-
-module.exports = { viewResume, userDetail, addResume, updateResume };
+module.exports = { viewResume, userDetail, addResume };
