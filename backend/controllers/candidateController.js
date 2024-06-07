@@ -1,15 +1,15 @@
 const { resPattern } = require("../handler/responseHandler");
-const { upload } = require("../middleware/upload");
+const { upload, getData } = require("../middleware/upload");
 const {
   postResume,
   changeResume,
-  getResume,
+  getResumeByUser,
 } = require("../services/candidateService");
 
 async function viewResume(req, res, next) {
   try {
-    const file = await getResume(req.params.id);
-    res.json(resPattern(file || {}, res.statusCode));
+    const data = await getResumeByUser(req.params.user_id);
+    res.json(resPattern(data.resume, res.statusCode));
   } catch (err) {
     next(err.message);
   }

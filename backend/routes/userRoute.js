@@ -26,7 +26,7 @@ const router = express.Router();
 
 router.get("/", verifyToken, userDetail);
 
-router.get("/:id", verifyToken, viewResume);
+router.get("/:user_id", verifyToken, viewResume);
 
 router.post("/signup", signupValidator, registerUser);
 

@@ -8,6 +8,14 @@ async function getResume(id) {
   }
 }
 
+async function getResumeByUser(user_id) {
+  try {
+    return await Detail.findOne({ user_id });
+  } catch (err) {
+    throw err;
+  }
+}
+
 async function postResume(data) {
   try {
     await Detail.create(data);
@@ -24,4 +32,4 @@ async function changeResume(id, data) {
   }
 }
 
-module.exports = { getResume, postResume, changeResume };
+module.exports = { getResume, getResumeByUser, postResume, changeResume };
