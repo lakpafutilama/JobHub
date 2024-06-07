@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 
 const candidateSchema = new mongoose.Schema({
-  id: { type: Number, ref: "users" },
+  id: { type: Number },
+  user_id: { type: String, ref: "users" },
   resume: { type: String, required: true },
   rate: { type: Number },
 });

@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const {
   registerUser,
   authenticateUser,
@@ -18,18 +17,9 @@ const {
 const { verifyToken } = require("../middleware/verifyToken");
 const multer = require("multer");
 
-// Configure Multer storage
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "..", "uploads"));
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-
-const uploader = multer({
-  storage: storage,
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 * 1024 },
 });
 
 const router = express.Router();
@@ -44,17 +34,11 @@ router.post("/login", loginValidator, authenticateUser);
 
 router.put("/", verifyToken, editUser);
 
-router.put("/pic", verifyToken, uploader.single("file"), (req, res, next) => {
-  try {
-    editPP(req, res);
-  } catch (error) {
-    console.log("here");
-  }
-});
+router.put("/pic", verifyToken, upload.single("pp"), editPP);
 
-router.post("/resume", verifyToken, addResume);
+router.post("/resume", verifyToken, upload.single("pp"), addResume);
 
-router.put("/resume/:id", verifyToken, updateResume);
+router.put("/resume/:id", verifyToken, upload.single("pp"), updateResume);
 
 router.delete("/:username", verifyToken, deleteUser);
 

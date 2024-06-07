@@ -1,4 +1,5 @@
 const cloudinary = require("cloudinary").v2;
+const streamifier = require("streamifier");
 
 require("dotenv").config();
 
@@ -8,13 +9,17 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-const uploadImage = async (filePath) => {
-  try {
-    const result = await cloudinary.uploader.upload(filePath);
-    return result;
-  } catch (error) {
-    console.log(error);
-  }
+const upload = (buffer) => {
+  return new Promise((resolve, reject) => {
+    const upload_stream = cloudinary.uploader.upload_stream((error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+    streamifier.createReadStream(buffer).pipe(upload_stream);
+  });
 };
 
-module.exports = { uploadImage };
+module.exports = { upload };

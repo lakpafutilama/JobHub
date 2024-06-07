@@ -1,4 +1,5 @@
 const { resPattern } = require("../handler/responseHandler");
+const { upload } = require("../middleware/upload");
 const {
   postResume,
   changeResume,
@@ -16,20 +17,22 @@ async function viewResume(req, res, next) {
 
 async function addResume(req, res, next) {
   try {
-    const resume = req.file;
-    console.log(req.body);
+    if (!req.file) {
+      return res
+        .status(422)
+        .json(resPattern("Resume required", res.statusCode));
+    }
 
-    // if (!resume) {
-    //   return res
-    //     .status(422)
-    //     .json(resPattern("Resume required", res.statusCode));
-    // }
-
-    // await postResume({ resumePath: resume.path });
+    const data = await upload(req.file.buffer);
+    const id = global._user._id.toString();
+    const result = {
+      user_id: id,
+      resume: data.secure_url,
+    };
+    await postResume(result);
 
     res.json({ message: "Added", status: res.statusCode });
   } catch (err) {
-    console.log(err);
     next(err.message);
   }
 }

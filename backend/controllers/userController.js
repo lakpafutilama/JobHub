@@ -12,7 +12,7 @@ const {
   countUsers,
   updateUser,
 } = require("../services/userService");
-const { uploadImage } = require("../middleware/upload");
+const { upload } = require("../middleware/upload");
 
 async function registerUser(req, res, next) {
   try {
@@ -91,7 +91,9 @@ async function editUser(req, res, next) {
 
 async function editPP(req, res, next) {
   try {
-    const data = await uploadImage(req.file.path);
+    if (!req.file)
+      return res.status(422).json(resPattern(`File missing`, res.statusCode));
+    const data = await upload(req.file.buffer);
     const id = global._user._id;
     const result = {
       pp: data.secure_url,
@@ -101,7 +103,6 @@ async function editPP(req, res, next) {
       .status(200)
       .json(resPattern(`Uploaded profile picture`, res.statusCode));
   } catch (err) {
-    console.log(err);
     next(err.message);
   }
 }
