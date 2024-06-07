@@ -10,7 +10,6 @@ const { signupValidator } = require("../validators/signupValidator");
 const { loginValidator } = require("../validators/loginValidator");
 const {
   addResume,
-  updateResume,
   viewResume,
   userDetail,
 } = require("../controllers/candidateController");
@@ -36,9 +35,7 @@ router.put("/", verifyToken, editUser);
 
 router.put("/pic", verifyToken, upload.single("pp"), editPP);
 
-router.post("/resume", verifyToken, upload.single("pp"), addResume);
-
-router.put("/resume/:id", verifyToken, upload.single("pp"), updateResume);
+router.post("/resume", verifyToken, upload.single("resume"), addResume);
 
 router.delete("/:username", verifyToken, deleteUser);
 

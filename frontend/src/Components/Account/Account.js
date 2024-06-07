@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {
+  Box,
   Grid,
-  Typography,
+  Modal,
   TextField,
   Button,
   MenuItem,
@@ -21,6 +22,7 @@ const genders = [
 ];
 
 const Account = () => {
+  const token = getCookie();
   const [userDetails, setUserDetails] = useState({
     email: "",
     password: "",
@@ -31,9 +33,17 @@ const Account = () => {
     role: "",
   });
 
+  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [newJob, setNewJob] = useState({
+    resume: null,
+    summary: "",
+  });
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     axios
@@ -146,6 +156,41 @@ const Account = () => {
       });
   };
 
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "resume") {
+      setNewJob({ ...newJob, resume: files[0] });
+    } else {
+      setNewJob({ ...newJob, [name]: value });
+    }
+  };
+
+  const handleResumeSubmit = async () => {
+    if (newJob.resume) {
+      const formData = new FormData();
+      formData.append("resume", newJob.resume);
+
+      try {
+        const response = await axios.post(
+          "http://localhost:9000/user/resume",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              token,
+            },
+          }
+        );
+        alert(response.data.data);
+        setNewJob({ resume: null, summary: "" });
+        setOpen(false);
+        window.location.reload();
+      } catch (err) {
+        alert(err.response.data.message);
+      }
+    }
+  };
+
   return (
     <div style={{ padding: "0 400px", marginTop: "88px" }}>
       <Navbar toggleSignIn={null} />
@@ -236,10 +281,39 @@ const Account = () => {
                 </>
               )}
               <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="info"
+                      fullWidth
+                      onClick={() => {
+                        /* Handle View Resume */
+                      }}
+                    >
+                      View Resume
+                    </Button>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="secondary"
+                      fullWidth
+                      onClick={handleOpen}
+                    >
+                      Update Resume
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+
+              <Grid item xs={12}>
                 <Button
                   type="submit"
                   variant="contained"
-                  color="primary"
+                  color="success"
                   fullWidth
                   onClick={handleSubmit}
                 >
@@ -256,6 +330,32 @@ const Account = () => {
           />
         </Grid>
       </Grid>
+      <Modal open={open} onClose={handleClose}>
+        <Box className="modal-box">
+          <TextField
+            label="Summary"
+            name="summary"
+            value={newJob.summary}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
+          <input
+            type="file"
+            name="resume"
+            onChange={handleInputChange}
+            accept=".pdf,.doc,.docx"
+            style={{ margin: "20px 0" }}
+          />
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handleResumeSubmit}
+          >
+            Add
+          </Button>
+        </Box>
+      </Modal>
     </div>
   );
 };
