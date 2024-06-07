@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
+import Avatar from "@mui/material/Avatar";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import MenuIcon from "@mui/icons-material/Menu";
+import axios from "axios";
+import { getCookie } from "../../helper/AccessToken"; // Adjust the import path as needed
 import "./Navbar.css";
 
 const StyledMenu = styled((props) => (
@@ -56,9 +59,25 @@ const StyledMenu = styled((props) => (
 function Navbar({ toggleSignIn, home }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMenuEl, setMobileMenuEl] = useState(null);
+  const [profilePic, setProfilePic] = useState(null);
   const open = Boolean(anchorEl);
   const mobileMenuOpen = Boolean(mobileMenuEl);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:9000/user", {
+        headers: {
+          token: getCookie(),
+        },
+      })
+      .then((response) => {
+        setProfilePic(response.data.data.pp); // Ensure the response structure matches this
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -134,7 +153,17 @@ function Navbar({ toggleSignIn, home }) {
         </>
       ) : (
         <div id="navbar" className="menu-icon-container">
-          <AccountCircleIcon className="menu-icon" onClick={handleClick} />
+          {profilePic ? (
+            <Avatar
+              src={profilePic}
+              className="menu-icon"
+              onClick={handleClick}
+              alt="Profile Picture"
+              style={{ cursor: "pointer" }}
+            />
+          ) : (
+            <AccountCircleIcon className="menu-icon" onClick={handleClick} />
+          )}
           <StyledMenu
             id="demo-customized-menu"
             MenuListProps={{

@@ -27,9 +27,8 @@ const Account = () => {
     full_name: "",
     gender: "",
     contact: "",
-    photo: "",
+    pp: "",
     role: "",
-    resume: "",
   });
 
   const [loading, setLoading] = useState(true);
@@ -51,9 +50,8 @@ const Account = () => {
           full_name: userData.full_name || "",
           gender: userData.gender || "",
           contact: userData.contact || "",
-          photo: userData.photo || "",
+          pp: userData.pp || "",
           role: userData.role,
-          resume: userData.resume || "",
         });
         setLoading(false);
       })
@@ -74,7 +72,7 @@ const Account = () => {
   const handleUpdatePhoto = (e) => {
     const file = e.target.files[0];
     const formData = new FormData();
-    formData.append("photo", file);
+    formData.append("pp", file);
 
     axios
       .put("http://localhost:9000/user/pic", formData, {
@@ -86,11 +84,12 @@ const Account = () => {
       .then((response) => {
         const updatedUserDetails = {
           ...userDetails,
-          photo: response.data.photo,
+          pp: response.data.pp,
         };
         setUserDetails(updatedUserDetails);
         setSnackbarMessage("Profile picture updated");
         setSnackbarOpen(true);
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error updating profile picture:", error);
@@ -151,42 +150,12 @@ const Account = () => {
     <div style={{ padding: "0 400px", marginTop: "88px" }}>
       <Navbar toggleSignIn={null} />
       <Grid container direction="column" alignItems="center" spacing={3}>
-        {userDetails.resume && (
-          <Grid item xs={12}>
-            <Button
-              variant="contained"
-              color="secondary"
-              fullWidth
-              onClick={() => {
-                window.open(userDetails.resume, "_blank");
-              }}
-            >
-              View Resume
-            </Button>
-          </Grid>
-        )}
-        {userDetails.role === "user" && (
-          <Grid item xs={12}>
-            <input
-              accept=".pdf"
-              style={{ display: "none" }}
-              id="upload-resume"
-              type="file"
-              onChange={handleUploadResume}
-            />
-            <label htmlFor="upload-resume">
-              <Button variant="contained" component="span" fullWidth>
-                Upload Resume
-              </Button>
-            </label>
-          </Grid>
-        )}
         <Grid item>
           {loading ? (
             <CircularProgress />
-          ) : userDetails.photo ? (
+          ) : userDetails.pp ? (
             <Avatar
-              src={userDetails.photo}
+              src={userDetails.pp}
               sx={{ width: 100, height: 100 }}
               style={{ marginLeft: "60px" }}
             />
@@ -290,4 +259,5 @@ const Account = () => {
     </div>
   );
 };
+
 export default Account;
