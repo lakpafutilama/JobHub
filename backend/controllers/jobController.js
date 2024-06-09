@@ -10,6 +10,7 @@ const {
 const {
   findApplicants,
   countApplicants,
+  jobApplication,
 } = require("../services/applicationService");
 const { getListedUser } = require("../services/userService");
 
@@ -23,9 +24,11 @@ exports.homePage = (req, res, next) => {
 
 async function jobList(req, res, next) {
   try {
+    const check = await jobApplication("user", global._user._id.toString());
+    const jobIds = check.map((data) => data.job_id);
     const jobList = await allJobs({
       status: "active",
-      user_id: { $ne: global._user._id },
+      _id: { $nin: jobIds },
     });
     const jobLists = await Promise.all(
       jobList.map(async (data) => {

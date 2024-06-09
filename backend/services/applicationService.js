@@ -2,7 +2,11 @@ const Application = require("../models/applicationModel");
 
 async function jobApplication(type, type_id) {
   try {
-    if (type == "user") return await Application.find({ user_id: type_id });
+    if (type == "user")
+      return await Application.find({
+        user_id: type_id,
+        status: { $ne: "pending" },
+      });
     else return await Application.find({ job_id: type_id });
   } catch (err) {
     throw err;
