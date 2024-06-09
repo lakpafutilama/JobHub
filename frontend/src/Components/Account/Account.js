@@ -393,7 +393,7 @@ const ResumeModal = ({ id, closeModal }) => {
             }}
           />
         ) : (
-          <p>Loading resume...</p>
+          <p>No resume</p>
         )}
       </div>
     </div>
