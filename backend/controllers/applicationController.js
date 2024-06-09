@@ -56,7 +56,7 @@ async function applyJob(req, res, next) {
 
 async function verifyApplication(req, res, next) {
   try {
-    await changeStatus(req.params.id, req.body);
+    await changeStatus(req.params.user_id, req.params.job_id, req.body);
     res.json(resPattern("Status verified", res.statusCode));
   } catch (err) {
     next(err.message);

@@ -23,6 +23,6 @@ router.get("/latest", latestApplications);
 
 router.post("/", postApplicationValidator, applyJob);
 
-router.put("/:id", verifyApplicationValidator, verifyApplication);
+router.put("/:user_id/:job_id", verifyApplicationValidator, verifyApplication);
 
 module.exports = router;

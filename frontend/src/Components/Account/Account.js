@@ -31,15 +31,16 @@ const Account = () => {
     contact: "",
     pp: "",
     role: "",
+    _id: "", // Include _id for resume URL
   });
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [newJob, setNewJob] = useState({
     resume: null,
-    summary: "",
   });
 
   const handleOpen = () => setOpen(true);
@@ -49,7 +50,7 @@ const Account = () => {
     axios
       .get("http://localhost:9000/user", {
         headers: {
-          token: getCookie(),
+          token,
         },
       })
       .then((response) => {
@@ -62,6 +63,7 @@ const Account = () => {
           contact: userData.contact || "",
           pp: userData.pp || "",
           role: userData.role,
+          _id: userData._id, // Set _id
         });
         setLoading(false);
       })
@@ -69,7 +71,7 @@ const Account = () => {
         console.error("Error fetching user data:", error);
         setLoading(false);
       });
-  }, []);
+  }, [token]);
 
   const handleChange = (e) => {
     setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
@@ -88,7 +90,7 @@ const Account = () => {
       .put("http://localhost:9000/user/pic", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          token: getCookie(),
+          token,
         },
       })
       .then((response) => {
@@ -114,7 +116,7 @@ const Account = () => {
     axios
       .put("http://localhost:9000/user", userDetails, {
         headers: {
-          token: getCookie(),
+          token,
         },
       })
       .then((response) => {
@@ -132,8 +134,6 @@ const Account = () => {
     const { name, value, files } = e.target;
     if (name === "resume") {
       setNewJob({ ...newJob, resume: files[0] });
-    } else {
-      setNewJob({ ...newJob, [name]: value });
     }
   };
 
@@ -154,13 +154,21 @@ const Account = () => {
           }
         );
         alert(response.data.data);
-        setNewJob({ resume: null, summary: "" });
+        setNewJob({ resume: null });
         setOpen(false);
         window.location.reload();
       } catch (err) {
         alert(err.response.data.message);
       }
     }
+  };
+
+  const openApplicantModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -260,7 +268,7 @@ const Account = () => {
                       variant="contained"
                       color="info"
                       fullWidth
-                      onClick={() => {}}
+                      onClick={openApplicantModal}
                     >
                       View Resume
                     </Button>
@@ -310,6 +318,7 @@ const Account = () => {
             style={{ margin: "20px 0" }}
           />
           <Button
+            style={{ marginLeft: "80px" }}
             variant="contained"
             color="success"
             onClick={handleResumeSubmit}
@@ -318,6 +327,75 @@ const Account = () => {
           </Button>
         </Box>
       </Modal>
+      {showModal && (
+        <ResumeModal id={userDetails._id} closeModal={closeModal} />
+      )}
+    </div>
+  );
+};
+
+const ResumeModal = ({ id, closeModal }) => {
+  const [resumeUrl, setResumeUrl] = useState("");
+
+  useEffect(() => {
+    const fetchResumeUrl = async () => {
+      try {
+        const response = await axios.get(`http://localhost:9000/user/${id}`, {
+          headers: {
+            token: getCookie(),
+          },
+        });
+        setResumeUrl(response.data.data);
+      } catch (error) {
+        console.error("Error fetching resume URL:", error);
+      }
+    };
+
+    fetchResumeUrl();
+  }, [id]);
+
+  return (
+    <div className="modal">
+      <div
+        className="modal-content"
+        style={{
+          background: "rgba(255, 255, 255, 0.7)",
+          color: "black",
+          backdropFilter: "blur(5px)",
+          WebkitBackdropFilter: "blur(10px)",
+          border: "1px solid #888",
+          borderRadius: 8,
+          width: 1050,
+          height: 900,
+        }}
+      >
+        <span
+          className="close"
+          style={{
+            color: "black",
+            float: "right",
+            fontSize: "28",
+            fontWeight: "bold",
+            cursor: "pointer",
+          }}
+          onClick={closeModal}
+        >
+          &times;
+        </span>
+        {resumeUrl ? (
+          <Avatar
+            variant={"rounded"}
+            alt="Resume"
+            src={resumeUrl}
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+          />
+        ) : (
+          <p>Loading resume...</p>
+        )}
+      </div>
     </div>
   );
 };

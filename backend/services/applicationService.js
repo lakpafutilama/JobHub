@@ -43,9 +43,10 @@ async function addApplication(data) {
   }
 }
 
-async function changeStatus(id, data) {
+async function changeStatus(user_id, job_id, data) {
   try {
-    await Application.findByIdAndUpdate(id, data);
+    const result = await Application.findOne({ user_id, job_id });
+    await Application.findByIdAndUpdate(result._id, data);
   } catch (err) {
     throw err;
   }

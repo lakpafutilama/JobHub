@@ -1,17 +1,20 @@
+import Avatar from "@mui/material/Avatar";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getCookie } from "../../helper/AccessToken";
 import "./JobList.css";
+import { Grid, Button } from "@mui/material";
 
 const JobList = ({ deleteJob, openEditModal, role }) => {
   const [jobs, setJobs] = useState([]);
+  const [selectedJob, setSelectedJob] = useState(null);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [showModal, setShowModal] = useState(false); // State to manage modal visibility
   const token = getCookie();
 
   useEffect(() => {
     const api =
-      role == "user"
+      role === "user"
         ? "http://localhost:9000/job/list"
         : "http://localhost:9000/job/list/specific";
 
@@ -29,7 +32,7 @@ const JobList = ({ deleteJob, openEditModal, role }) => {
     };
 
     fetchData();
-  }, []);
+  }, [role, token]);
 
   const handleClose = async (id) => {
     try {
@@ -49,13 +52,14 @@ const JobList = ({ deleteJob, openEditModal, role }) => {
     }
   };
 
-  const openApplicantModal = (applicant) => {
+  const openApplicantModal = (applicant, job) => {
     setSelectedApplicant(applicant);
-    setShowModal(true); // Show modal when View Resume button is clicked
+    setSelectedJob(job);
+    setShowModal(true);
   };
 
   const closeModal = () => {
-    setShowModal(false); // Close modal
+    setShowModal(false);
   };
 
   return (
@@ -97,11 +101,6 @@ const JobList = ({ deleteJob, openEditModal, role }) => {
               <br />
             </div>
           )}
-
-          {showModal &&
-            selectedApplicant && ( // Render modal conditionally
-              <Modal applicant={selectedApplicant} closeModal={closeModal} />
-            )}
         </div>
       ) : (
         <div className="job-listings">
@@ -141,7 +140,7 @@ const JobList = ({ deleteJob, openEditModal, role }) => {
                       <li key={applicant._id}>
                         {applicant.username}
                         <button
-                          onClick={() => openApplicantModal(applicant)}
+                          onClick={() => openApplicantModal(applicant, job)}
                           style={{ backgroundColor: "#4299e1", marginLeft: 25 }}
                         >
                           View Resume
@@ -170,7 +169,11 @@ const JobList = ({ deleteJob, openEditModal, role }) => {
 
           {showModal &&
             selectedApplicant && ( // Render modal conditionally
-              <Modal applicant={selectedApplicant} closeModal={closeModal} />
+              <Modal
+                applicant={selectedApplicant}
+                closeModal={closeModal}
+                job={selectedJob}
+              />
             )}
         </div>
       )}
@@ -178,7 +181,47 @@ const JobList = ({ deleteJob, openEditModal, role }) => {
   );
 };
 
-const Modal = ({ applicant, closeModal }) => {
+const Modal = ({ applicant, closeModal, job }) => {
+  const [resumeUrl, setResumeUrl] = useState("");
+
+  useEffect(() => {
+    const fetchResumeUrl = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:9000/user/${applicant.user_id}`,
+          {
+            headers: {
+              token: getCookie(),
+            },
+          }
+        );
+        setResumeUrl(response.data.data);
+      } catch (error) {
+        console.error("Error fetching resume URL:", error);
+      }
+    };
+
+    fetchResumeUrl();
+  }, [applicant.user_id]);
+
+  const updateStatus = async (status) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:9000/application/${applicant._id}/${job._id}`,
+        { status },
+        {
+          headers: {
+            token: getCookie(),
+          },
+        }
+      );
+      console.log(response.data.message);
+      closeModal(); // Close modal after updating status
+    } catch (error) {
+      console.error("Error updating application status:", error);
+    }
+  };
+
   return (
     <div className="modal">
       <div
@@ -188,8 +231,8 @@ const Modal = ({ applicant, closeModal }) => {
           color: "black",
           backdropFilter: "blur(5px)",
           WebkitBackdropFilter: "blur(10px)",
-          maxWidth: "600",
-          padding: "10",
+          maxWidth: 600,
+          padding: 10,
           border: "1px solid #888",
           borderRadius: 8,
         }}
@@ -199,7 +242,7 @@ const Modal = ({ applicant, closeModal }) => {
           style={{
             color: "black",
             float: "right",
-            fontSize: "28",
+            fontSize: 28,
             fontWeight: "bold",
             cursor: "pointer",
           }}
@@ -208,13 +251,41 @@ const Modal = ({ applicant, closeModal }) => {
           &times;
         </span>
         <h5>{applicant.full_name.toUpperCase()}</h5>
-        <iframe
-          src={
-            (`http://localhost:9000/user/${applicant._id}}`,
-            { headers: { token: getCookie() } })
-          }
-          style={{ width: "100%", height: "500px" }}
-        />
+        {resumeUrl ? (
+          <iframe
+            src={resumeUrl}
+            style={{ width: "100%", height: "500px" }}
+            title="Resume"
+          />
+        ) : (
+          <p>Loading resume...</p>
+        )}
+        <Grid item xs={12}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Button
+                type="button"
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={() => updateStatus("accepted")}
+              >
+                Approve
+              </Button>
+            </Grid>
+            <Grid item xs={6}>
+              <Button
+                type="button"
+                variant="contained"
+                color="secondary"
+                fullWidth
+                onClick={() => updateStatus("rejected")}
+              >
+                Reject
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     </div>
   );
