@@ -1,9 +1,8 @@
-import Avatar from "@mui/material/Avatar";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getCookie } from "../../helper/AccessToken";
 import "./JobList.css";
-import { Grid, Button } from "@mui/material";
+import { Grid, Button, Avatar } from "@mui/material";
 
 const JobList = ({ deleteJob, openEditModal, role }) => {
   const [jobs, setJobs] = useState([]);
@@ -167,14 +166,13 @@ const JobList = ({ deleteJob, openEditModal, role }) => {
             </div>
           )}
 
-          {showModal &&
-            selectedApplicant && ( // Render modal conditionally
-              <Modal
-                applicant={selectedApplicant}
-                closeModal={closeModal}
-                job={selectedJob}
-              />
-            )}
+          {showModal && selectedApplicant && (
+            <Modal
+              applicant={selectedApplicant}
+              closeModal={closeModal}
+              job={selectedJob}
+            />
+          )}
         </div>
       )}
     </>
@@ -188,7 +186,9 @@ const Modal = ({ applicant, closeModal, job }) => {
     const fetchResumeUrl = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9000/user/${applicant.user_id}`,
+          `http://localhost:9000/user/${
+            applicant.user_id || applicant._id.toString()
+          }`,
           {
             headers: {
               token: getCookie(),
@@ -215,7 +215,6 @@ const Modal = ({ applicant, closeModal, job }) => {
           },
         }
       );
-      console.log(response.data.message);
       closeModal(); // Close modal after updating status
     } catch (error) {
       console.error("Error updating application status:", error);
@@ -254,11 +253,11 @@ const Modal = ({ applicant, closeModal, job }) => {
         {resumeUrl ? (
           <iframe
             src={resumeUrl}
-            style={{ width: "100%", height: "500px" }}
+            style={{ width: "100%", height: "500px", alignContent: "center" }}
             title="Resume"
           />
         ) : (
-          <p>Loading resume...</p>
+          <p>No resume</p>
         )}
         <Grid item xs={12}>
           <Grid container spacing={2}>

@@ -153,7 +153,7 @@ const Account = () => {
             },
           }
         );
-        alert(response.data.data);
+        alert("Uploaded");
         setNewJob({ resume: null });
         setOpen(false);
         window.location.reload();
@@ -258,34 +258,34 @@ const Account = () => {
                       fullWidth
                     />
                   </Grid>
+                  <Grid item xs={12}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={6}>
+                        <Button
+                          type="button"
+                          variant="contained"
+                          color="info"
+                          fullWidth
+                          onClick={openApplicantModal}
+                        >
+                          View Resume
+                        </Button>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Button
+                          type="button"
+                          variant="contained"
+                          color="secondary"
+                          fullWidth
+                          onClick={handleOpen}
+                        >
+                          Update Resume
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Grid>
                 </>
               )}
-              <Grid item xs={12}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <Button
-                      type="button"
-                      variant="contained"
-                      color="info"
-                      fullWidth
-                      onClick={openApplicantModal}
-                    >
-                      View Resume
-                    </Button>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Button
-                      type="button"
-                      variant="contained"
-                      color="secondary"
-                      fullWidth
-                      onClick={handleOpen}
-                    >
-                      Update Resume
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Grid>
 
               <Grid item xs={12}>
                 <Button
